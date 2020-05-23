@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="common_white">#FFFFFF</color>
+    <color name="common_half_trans_white">#F2FFFFFF</color>
+    <color name="common_gradient_white">#ECF1FF</color>
+    <color name="common_gray_text">#9A9A9A</color>
+    <color name="rokid_main_color">#408CFF</color>
+    <color name="common_text_black_color">#323233</color>
+    <color name="common_hint_color">#33000000</color>
+    <color name="common_btn_unclickable">#33408CFF</color>
+    <color name="common_bottom_btn_press_color">#387AE9</color>
+</resources>

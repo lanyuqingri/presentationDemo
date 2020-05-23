@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="deploy_dialog_btn_text_size">33.33sp</dimen>
+    <dimen name="deploy_dialog_tip_text_size">28sp</dimen>
+    <dimen name="deploy_dialog_action_margin_top">40dp</dimen>
+    <dimen name="deploy_dialog_margin_top">40dp</dimen>
+    <dimen name="deploy_info_text_size">24sp</dimen>
+    <dimen name="rokid_glass_dialog_width">617dp</dimen>
+    <dimen name="rokid_glass_dialog_height">251dp</dimen>
+
+    <dimen name="rokid_glass_dialog_buttons_group_top_pading">13dp</dimen>
+    <dimen name="rokid_glass_dialog_top_padding">40dp</dimen>
+
+    <dimen name="rokid_glass_dialog_button_radius">50dp</dimen>
+    <dimen name="rokid_glass_dialog_button_border_width">1.5dp</dimen>
+
+    <dimen name="rokid_glass_dialog_button_text_size">21sp</dimen>
+    <dimen name="rokid_glass_dialog_button_padding_vertical">24dp</dimen>
+    <dimen name="rokid_glass_dialog_button_padding_horizontal">54dp</dimen>
+    <!--<dimen name="rokid_glass_dialog_button_height">50dp</dimen>-->
+    <dimen name="rokid_glass_dialog_button_divider">2dp</dimen>
+
+    <dimen name="rokid_glass_dialog_title_text_size">25sp</dimen>
+
+    <dimen name="rokid_glass_dialog_press_width">617dp</dimen>
+    <dimen name="rokid_glass_dialog_press_height">251dp</dimen>
+
+    <dimen name="rokid_glass_dialog_press_top_padding">84dp</dimen>
+    <dimen name="rokid_glass_dialog_press_drawable_padding">25dp</dimen>
+
+    <!-- common -->
+    <dimen name="common_margin">10dp</dimen>
+    <dimen name="common_margin_right">5dp</dimen>
+    <dimen name="common_margin_top">20dp</dimen>
+
+    <dimen name="common_padding">4dp</dimen>
+    <dimen name="common_padding_top">2dp</dimen>
+    <dimen name="common_btn_width">140dp</dimen>
+    <dimen name="common_btn_height">70dp</dimen>
+
+    <dimen name="status_bar_icon_width">26dp</dimen>
+    <dimen name="status_bar_icon_height">35dp</dimen>
+    <dimen name="status_bar_margin_top">5dp</dimen>
+    <dimen name="status_bar_time_text_size">30sp</dimen>
+    <dimen name="glass_status_bar_height">45dp</dimen>
+
+    <dimen name="glass_status_border_width">50dp</dimen>
+    <dimen name="glass_status_border_height">10dp</dimen>
+    <dimen name="glass_status_border_radius">10dp</dimen>
+    <dimen name="glass_status_border_stroke_width">2dp</dimen>
+    <dimen name="glass_status_round_width">6dp</dimen>
+    <dimen name="glass_status_round_height">6dp</dimen>
+
+    <dimen name="glass_status_live_height">36dp</dimen>
+    <dimen name="glass_status_round_image_width">7dp</dimen>
+    <dimen name="glass_status_round_image_height">7dp</dimen>
+
+    <dimen name="glass_status_round_margin_left">8dp</dimen>
+    <dimen name="glass_status_round_text_margin_left">6dp</dimen>
+    <dimen name="glass_status_round_text_margin_right">5dp</dimen>
+    <dimen name="glass_status_bar_margin">80dp</dimen>
+
+    <dimen name="glass_status_text_size">18sp</dimen>
+
+    <dimen name="glass_status_timer_left">50dp</dimen>
+    <dimen name="glass_status_timer_top">8dp</dimen>
+
+    <dimen name="glass_base_item_title_text_size">26sp</dimen>
+    <dimen name="glass_base_item_label_text_size">30sp</dimen>
+    <dimen name="glass_base_item_content_margin">10dp</dimen>
+    <dimen name="glass_base_item_content_margin_top">10dp</dimen>
+    <dimen name="glass_base_item_label_margin">-10dp</dimen>
+    <dimen name="glass_base_item_label_margin_top">-18dp</dimen>
+
+    <dimen name="glass_button_text_size">27sp</dimen>
+    <dimen name="glass_button_padding_top">24dp</dimen>
+    <dimen name="glass_button_padding_bottom">23dp</dimen>
+
+    <dimen name="glass_imu_count_text_size">24sp</dimen>
+
+    <dimen name="glass_icon_padding_top">3dp</dimen>
+    <dimen name="glass_icon_padding_left">10dp</dimen>
+    <dimen name="glass_icon_width">116dp</dimen>
+    <dimen name="glass_icon_margin_right">10dp</dimen>
+    <dimen name="glass_imu_margin_top">60dp</dimen>
+
+    <!-- text size-->
+    <dimen name="glass_larger_text_size">40sp</dimen>
+    <dimen name="glass_large_text_size">35sp</dimen>
+    <dimen name="glass_medium_text_size">30sp</dimen>
+    <dimen name="glass_text_size">25sp</dimen>
+    <dimen name="glass_small_text_size">21sp</dimen>
+    <dimen name="glass_thin_text_size">18sp</dimen>
+
+    <integer name="indicator_max_radius">4</integer>
+    <integer name="indicator_min_radius">3</integer>
+
+    <integer name="anim_duration_very_long">1500</integer>
+    <integer name="anim_duration_long">500</integer>
+    <integer name="anim_duration_medium">300</integer>
+    <dimen name="d_smart_recog_rect_width">300dp</dimen>
+    <dimen name="d_smart_recog_rect_height">300dp</dimen>
+</resources>

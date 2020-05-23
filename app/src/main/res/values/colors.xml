@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="rokid_glass_dialog_button_unfocused">#FF909090</color>
+    <color name="rokid_glass_dialog_button_focused_glow_top_edge">#FFADDFFF</color>
+    <color name="rokid_glass_dialog_button_focused_glow_bottom_edge">#FF7784FF</color>
+    <color name="rokid_glass_dialog_button_focused_top_edge">#FFFFFFFF</color>
+    <color name="rokid_glass_dialog_button_focused_mid">#FF353469</color>
+    <color name="rokid_glass_dialog_button_focused_bottom_edge">#FF090918</color>
+    <color name="rokid_glass_dialog_button_focused_solid">#FF000000</color>
+
+    <color name="rokid_glass_dialog_title_text_color">#FFFFFFFF</color>
+    <color name="rokid_glass_dialog_button_focused_text_color">#FFFFFFFF</color>
+    <color name="rokid_glass_dialog_button_text_color">#B3FFFFFF</color>
+
+    <color name="rokid_glass_dialog_background">#AA000000</color>
+
+    <color name="rokid_glass_dialog_press_default_color">#FFFF4547</color>
+
+    <!-- common -->
+    <color name="black_half">#CC000000</color>
+    <color name="common_green">#FF0BC10A</color>
+    <color name="common_blue">#FF4594FF</color>
+
+
+    <color name="common_focused_color">#FFB3B3B3</color>
+    <color name="common_normal_text_color">#FF363636</color>
+
+    <color name="color_time">@color/common_text_color</color>
+    <color name="glass_text_color">#FF909090</color>
+    <color name="glass_record_color">#FF404040</color>
+    <color name="glass_record_text_color">#FF6F6F6F</color>
+    <color name="glass_record_r_color">#FFEF4747</color>
+    <color name="glass_imu_count_text_color">#FF737373</color>
+
+    <!-- color -->
+    <color name="common_text_color">#80FFFFFF</color>
+    <color name="common_light_text_color">#B3FFFFFF</color>
+
+
+    <color name="glass_button_focused_text_color">#CCFFFFFF</color>
+    <color name="glass_button_text_color">#99FFFFFF</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="white">#fff</color>
+    <color name="black">#000</color>
+    <color name="gray">#666</color>
+    <color name="light_gray">#999</color>
+    <color name="boot_background">#0C195C</color>
+    <color name="c_default_font_color">#3374DE</color>
+    <color name="c_edit_text_color">#D4EBFF</color>
+    <color name="c_edit_text_hint_color">#2E4699</color>
+    <color name="face_manage_tips_text_color">#4668EB</color>
+    <color name="face_manage_tv_back">#0081FF</color>
+    <color name="face_manage_tv_stroke">#0081FF</color>
+    <color name="tv_add_face_color">#FFA65E</color>
+    <color name="tv_add_face_commit_color">#24E363</color>
+    <color name="add_face_star">#FF5E00</color>
+    <color name="add_face_default">#0090FF</color>
+    <color name="hint_text_color">#95A5C6</color>
+    <color name="tv_add_photo">#408CFF</color>
+    <color name="tv_add_data_color">#D2E3FF</color>
+    <color name="tv_record_summary">#008FFF</color>
+
+    <!--    face mange color-->
+</resources>

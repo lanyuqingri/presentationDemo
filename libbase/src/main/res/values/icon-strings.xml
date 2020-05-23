@@ -1,0 +1,38 @@
+<resources>
+
+    <string name="icon_back">&#xe618;</string>
+    <string name="icon_next">&#xe635;</string>
+    <string name="icon_switch">&#xe659;</string>
+    <string name="icon_clear">&#xe621;</string>
+
+
+    <string name="icon_backquote">&#xe60f;</string>
+    <string name="icon_closequote">&#xe60e;</string>
+
+
+    <string name="icon_dot_left">&#xe60d;</string>
+    <string name="icon_dot_big">&#xe611;</string>
+
+
+    <string name="icon_link">&#xe630;</string>
+
+    <string name="icon_add">&#xe648;</string>
+
+    <!--home activity-->
+
+    <string name="icon_action_sheet_device_check">&#xe633;</string>
+
+
+    <string name="icon_psw_eye">&#xe646;</string>
+    <string name="icon_psw_eye_close">&#xe63f;</string>
+    <string name="icon_wifi_lock">&#xe63c;</string>
+
+
+    <string name="icon_search">&#xe65c;</string>
+
+    <string name="icon_delete">&#xe600;</string>
+
+
+
+
+</resources>

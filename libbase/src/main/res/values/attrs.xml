@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="leftIcon" format="string" />
+    <attr name="leftIconColor" format="color" />
+    <attr name="leftIconSize" format="dimension" />
+
+    <attr name="style">
+        <flag name="light" value="0" />
+        <flag name="dark" value="1" />
+    </attr>
+
+    <!--播放图标的icon style-->
+    <attr name="playIconStyle">
+        <flag name="white" value="0" />
+        <flag name="black" value="1" />
+        <flag name="none" value="2" />
+    </attr>
+
+    <!--小切换设备的icon style-->
+    <attr name="switchIconStyle">
+        <flag name="white" value="0" />
+        <flag name="black" value="1" />
+    </attr>
+
+
+    <attr name="hideLine" format="boolean" />
+    <attr name="lineColor" format="color" />
+
+    <attr name="site">
+        <flag name="left" value="0" />
+        <flag name="center" value="1" />
+        <flag name="right" value="2" />
+    </attr>
+
+
+    <attr name="bannerStyle">
+        <flag name="app" value="0" />
+        <flag name="media" value="1" />
+    </attr>
+
+
+    <declare-styleable name="IconTextView">
+        <attr name="android:textStyle" />
+        <attr name="iconColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="TitleBar">
+        <attr name="android:background" />
+        <attr name="style" />
+        <attr name="leftIcon" />
+        <attr name="leftIconColor" />
+        <attr name="leftIconSize" />
+        <attr name="hideLine" />
+        <attr name="titleText" format="string" />
+        <attr name="titleTextColor" format="color" />
+        <attr name="titleStyle">
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+            <flag name="bold_italic" value="3" />
+        </attr>
+        <attr name="titleTextSize" format="dimension" />
+        <attr name="rightText" format="string" />
+        <attr name="rightTextSize" format="dimension" />
+        <attr name="rightTextColor" format="color" />
+        <attr name="rightTextStyle">
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+            <flag name="bold_italic" value="3" />
+        </attr>
+        <attr name="rightTextDisableColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="BottomBar">
+        <attr name="android:background" />
+        <attr name="style" />
+        <attr name="leftIcon" />
+        <attr name="leftIconColor" />
+        <attr name="leftIconSize" />
+        <attr name="hideLine" />
+        <attr name="background" />
+        <attr name="centerIcon" format="string" />
+        <attr name="centerIconColor" format="color" />
+        <attr name="centerIconSize" format="dimension" />
+        <attr name="rightIcon" format="string" />
+        <attr name="rightIconColor" format="color" />
+        <attr name="rightIconSize" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="MultiEditText">
+        <attr name="android:background" />
+        <attr name="android:hint" />
+        <attr name="style" />
+        <attr name="hideLine" />
+        <attr name="lineColor" />
+        <attr name="hintColor" format="color" />
+        <attr name="titleColor" format="color" />
+        <attr name="title" format="string" />
+        <attr name="showPasswordIcon" format="boolean" />
+        <attr name="passwordIconColor" format="color" />
+        <attr name="showClearIcon" format="boolean" />
+        <attr name="clearIconColor" format="color" />
+        <attr name="textColor" format="color" />
+        <attr name="textSize" format="dimension" />
+        <attr name="maxLines" format="integer" />
+        <attr name="inputType">
+            <flag name="text" value="0" />
+            <flag name="number" value="1" />
+            <flag name="textPassword" value="2" />
+            <flag name="numberPassword" value="3" />
+            <flag name="numberDecimal" value="4" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="SwipeMenuLayout">
+        <attr name="swipeEnable" format="boolean" />
+        <attr name="ios" format="boolean" />
+        <attr name="leftSwipe" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="SwitchDeviceView">
+        <attr name="style" />
+        <attr name="site" />
+    </declare-styleable>
+
+    <declare-styleable name="SwitchDeviceSmallView">
+        <attr name="switchIconStyle" />
+    </declare-styleable>
+
+
+
+    <declare-styleable name="MediaPlayAlbum">
+        <attr name="playIconStyle" />
+    </declare-styleable>
+
+
+    <declare-styleable name="Banner">
+        <attr name="bannerStyle"/>
+        <attr name="bannerMaxSize" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="ScodeView">
+        <attr name="box" format="integer" />
+        <attr name="child_h_padding" format="dimension"/>
+        <attr name="child_v_padding" format="dimension"/>
+        <attr name="child_width" format="dimension"/>
+        <attr name="child_height" format="dimension"/>
+        <attr name="padding" format="dimension"/>
+        <attr name="box_bg_focus" format="reference"/>
+        <attr name="box_bg_normal" format="reference"/>
+        <attr name="scode_inputType" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="Search_View">
+        <attr name="textSizeSearch" format="dimension"  />
+        <attr name="textColorSearch" format="color" />
+        <attr name="textHintSearch" format="string" />
+        <attr name="searchBlockHeight" format="integer" />
+        <attr name="searchBlockColor" format="color" />
+    </declare-styleable>
+
+</resources>

@@ -1,0 +1,85 @@
+<resources>
+    <string name="app_name">shield</string>
+
+    <!--     布控离线包相关     -->
+    <string name="deploy_check_update">检查更新</string>
+    <string name="deploy_download_update">下载更新</string>
+    <string name="deploy_checking_update">正在检查更新</string>
+    <string name="deploy_check_update_no_data">未检查到新的布控包</string>
+    <string name="deploy_checking_timeout">检查超时</string>
+    <string name="deploy_checking_timeout_retry_tip">请尝试重新检查更新</string>
+    <string name="deploy_checking_timeout_retry">重试</string>
+    <string name="deploy_back">返回</string>
+    <string name="deploy_task_info">布控包信息</string>
+    <string name="deploy_task_info_name">包名称&#8195;&#8195;:&#8195;</string>
+    <string name="deploy_task_info_update_time" formatted="false">更新时间&#8195;:&#8195;%1$s（%2$s）</string>
+    <string name="deploy_task_info_update_time_default">更新时间&#8195;:&#8195;未更新</string>
+    <string name="deploy_task_info_feature_count">特征数量&#8195;:&#8195;%s</string>
+    <string name="deploy_task_info_feature_count_none">无法获取</string>
+    <string name="deploy_task_info_person_count">人员数量&#8195;:&#8195;%s</string>
+    <string name="deploy_receive_message">收到人脸布控任务包（%s），是否下载？</string>
+    <string name="deploy_check_new_pkg">检查到新的布控任务包（%s），是否下载？</string>
+    <string name="deploy_check_new_pkg_tip">是否立即下载更新</string>
+    <string name="deploy_download_complete">布控包下载完成，是否替换掉旧包？</string>
+    <string name="deploy_downloading_percent">正在下载布控包 %s%%</string>
+    <string name="deploy_download_error">下载失败</string>
+    <string name="deploy_download_error_network">网络不可用，请检查网络连接</string>
+    <string name="deploy_downloading_tip">请勿断开WIFI, 下载过程您可正常使用</string>
+    <string name="deploy_replace_now">立即替换</string>
+    <string name="deploy_replace_next_time">下次再说</string>
+    <string name="deploy_replace_done">布控包替换成功</string>
+    <string name="deploy_update_way_online">在线下载</string>
+    <string name="deploy_update_way_usb">USB推送</string>
+    <string name="deploy_single_face">单人核查</string>
+    <string name="deploy_plate">车牌识别</string>
+    <string name="deploy_single_face_and_plate">单人/车牌</string>
+
+    <string name="s_new_friend">未匹配到信息</string>
+    <string name="s_new_plate">数据库无此车牌信息</string>
+    <string name="s_recog_done">识别完成</string>
+    <string name="s_continue_recog">继续识别(3s)</string>
+    <string name="s_tag_title">标签名称</string>
+    <string name="s_recog_base_pose">请正对脸</string>
+    <string name="s_recoging">识别中...</string>
+    <string name="s_single_face_recog_offline">离线</string>
+    <string name="app_summary">Rokid</string>
+    <string name="Copyright">Leave nobody behind~~~</string>
+    <string name="s_boot_copyright">copyright@2020 杭州灵伴科技有限公司</string>
+    <string name="s_user_name">ID: %s</string>
+    <string name="s_last_login_time">lastest login time: %s</string>
+    <string name="s_home_page_recog_record_desc">recognition records</string>
+    <string name="s_home_page_face_manager">face manager</string>
+    <string name="s_home_page_plate_manager">plate manager</string>
+    <string name="s_home_page_recog_settings">recognition settings</string>
+    <string name="s_home_page_manual">manual</string>
+    <string-array name="record_array">
+        <item>人脸识别</item>
+        <item>车牌识别</item>
+    </string-array>
+
+    <string name="face_manage_title">人脸管理</string>
+    <string name="face_add_title">添加人脸</string>
+    <string name="tv_add_face_edit">编辑</string>
+    <string name="face_import_tv_name">*姓名</string>
+    <string name="et_name_hint">请输入姓名...</string>
+    <string name="tv_card_text">身份证</string>
+    <string name="et_card_num_hint">请输入身份证号...</string>
+    <string name="et_address_hint">请输入地点...</string>
+    <string name="et_tag_hint">请输入标签...</string>
+    <string name="tv_upload_text">*添加照片</string>
+    <string name="tv_address">地点</string>
+    <string name="tv_tag">标签</string>
+    <string name="tv_add_photo">添加照片</string>
+    <string name="tv_add_face_commit">完成</string>
+    <string name="plate_manage_title">车牌管理</string>
+    <string name="add_plate_title">添加车牌</string>
+    <string name="tv_item_plate_owner">*车主</string>
+    <string name="tv_item_plate_num">*车牌</string>
+    <string name="et_plate_num_hint">请输入车牌...</string>
+    <string name="et_plate_owner_name_hint">请输入车主姓名...</string>
+    <string name="tv_item_plate_brand">*品牌</string>
+    <string name="et_plate_brand_hint">请输入品牌名称...</string>
+    <string name="tv_item_plate_color">*颜色</string>
+    <string name="et_plate_color_hint">请输入车辆颜色...</string>
+    <string name="no_data_please_add">暂无数据 请添加数据</string>
+</resources>

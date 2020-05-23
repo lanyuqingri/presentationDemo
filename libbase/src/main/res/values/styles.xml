@@ -1,0 +1,119 @@
+<resources>
+    <!-- This is Activity theme -->
+    <style name="Common.Theme.Light" parent="Common.Theme">
+        <item name="colorPrimaryDark">@color/common_white</item>
+        <item name="android:windowBackground">@color/common_white</item>
+        <!--自定义AlertDialog-->
+        <item name="alertDialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert.Self</item>
+    </style>
+
+    <!--自定义ScodeView-->
+    <style name="Common.Theme.ScodeView" parent="Common.Theme.Light">
+        <item name="colorControlNormal">@color/common_text_black_color</item>
+        <item name="colorControlActivated">@color/common_text_black_color</item>
+    </style>
+
+    <style name="Theme.AppCompat.Light.Dialog.Alert.Self" parent="@style/Theme.AppCompat.Light.Dialog.Alert">
+        <!--修改AlertDialog按钮的颜色-->
+        <item name="colorAccent">@color/rokid_main_color</item>
+        <item name="android:backgroundDimAmount">0.3</item>
+    </style>
+
+    <style name="Common.Theme.Fullscreen" parent="@style/Common.Theme">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="Common.Theme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--自定义AlertDialog-->
+        <item name="alertDialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert.Self</item>
+    </style>
+
+    <!-- This is Widget style -->
+
+    <style name="toggle_dialog_anim">
+        <item name="android:windowEnterAnimation">@anim/common_toggle_dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/common_toggle_dialog_exit</item>
+    </style>
+
+    <!--timerPick text size-->
+
+    <style name="Common_Dialog" parent="android:style/Theme.Dialog">
+        <item name="android:background">#00000000</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimAmount">0.3</item>
+    </style>
+
+    <!--<style name="DarkAnimation">-->
+        <!--<item name="android:windowEnterAnimation">@anim/common_popwindow_dark_fade_in</item>-->
+        <!--<item name="android:windowExitAnimation">@anim/common_popwindow_dark_fade_out</item>-->
+    <!--</style>-->
+
+    <style name="noAnimation">
+        <item name="android:activityOpenEnterAnimation">@null</item>
+        <item name="android:activityOpenExitAnimation">@null</item>
+        <item name="android:activityCloseEnterAnimation">@null</item>
+        <item name="android:activityCloseExitAnimation">@null</item>
+        <item name="android:taskOpenEnterAnimation">@null</item>
+        <item name="android:taskOpenExitAnimation">@null</item>
+        <item name="android:taskCloseEnterAnimation">@null</item>
+        <item name="android:taskCloseExitAnimation">@null</item>
+        <item name="android:taskToFrontEnterAnimation">@null</item>
+        <item name="android:taskToFrontExitAnimation">@null</item>
+        <item name="android:taskToBackEnterAnimation">@null</item>
+        <item name="android:taskToBackExitAnimation">@null</item>
+    </style>
+
+    <style name="translucent" parent="Common.Theme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/noAnimation</item>
+    </style>
+
+    <!--公版APP样式-->
+
+    <!--TitleBar-->
+    <style name="Common_TitleBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">44dp</item>
+    </style>
+
+    <style name="Common_Page_Title">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">38dp</item>
+        <item name="android:layout_marginTop">32dp</item>
+        <item name="android:textColor">@color/common_text_black_color</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="Common_Page_Subtitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">40dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:textColor">@color/common_gray_text</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="Common_Bottom_Button" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">42dp</item>
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/common_white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:enabled">true</item>
+    </style>
+
+    <style name="Common_Icon_Font_Big">
+        <item name="android:textSize">36sp</item>
+    </style>
+    <style name="Common_Icon_Font_Small">
+        <item name="android:textSize">24sp</item>
+    </style>
+</resources>

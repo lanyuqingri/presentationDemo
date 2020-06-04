@@ -22,6 +22,7 @@ import android.view.Display;
 import android.view.Surface;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jiangdg.usbcamera.UVCCameraHelper;
@@ -61,14 +62,26 @@ public class MainActivity extends AppCompatActivity implements CameraDialog.Came
     private int curDisplayId = -1;
 
     private ImageView mFaceImageView;
+    private TextView mTvUsbSN;
 
 
+    private void showCurrUsbDeviceSN(UsbDevice device){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mTvUsbSN.setText(String.format(getString(R.string.s_current_usb_device), device.getSerialNumber()));
+            }
+        });
+    }
     private UVCCameraHelper.OnMyDevConnectListener listener = new UVCCameraHelper.OnMyDevConnectListener() {
 
         @Override
         public void onAttachDev(UsbDevice device) {
             // request open permission
             Logger.i("USBCamera onAttachDev -------->is called: " + device.getDeviceName());
+            if(device.getVendorId() == Constant.ROKID_USB_VENDOR_ID && device.getProductId() == Constant.ROKID_USB_PRODUCT_ID){
+                showCurrUsbDeviceSN(device);
+            }
             if (!isRequest) {
                 isRequest = true;
                 if (mCameraHelper != null) {
@@ -163,6 +176,8 @@ public class MainActivity extends AppCompatActivity implements CameraDialog.Came
         mDisplayManager.registerDisplayListener(mDisplayListener, new Handler());
         mTextureView = findViewById(R.id.camera_view);
         mFaceImageView = findViewById(R.id.iv_crop_face);
+        mTvUsbSN = findViewById(R.id.tv_usb_sn);
+        mTvUsbSN.setText(String.format(getString(R.string.s_current_usb_device), getString(R.string.s_usb_device_offline)));
         mUVCCameraView = (CameraViewInterface) mTextureView;
         mUVCCameraView.setCallback(this);
         mCameraHelper = UVCCameraHelper.getInstance();

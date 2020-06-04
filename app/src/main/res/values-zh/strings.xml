@@ -84,4 +84,7 @@
     <string name="et_plate_brand_hint">请输入品牌名称...</string>
     <string name="tv_item_plate_color">*颜色</string>
     <string name="et_plate_color_hint">请输入车辆颜色...</string>
+    <string name="no_data_please_add">暂无数据 请添加数据</string>
+    <string name="s_current_usb_device">当前USB设备: %s</string>
+    <string name="s_usb_device_offline">未连接</string>
 </resources>

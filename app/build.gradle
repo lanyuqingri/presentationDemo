@@ -38,4 +38,5 @@ dependencies {
     implementation 'com.github.florent37:viewanimator:1.0.5'
     implementation project(path: ':libusbcamera')
     implementation project(path: ':libbase')
+    implementation 'androidx.multidex:multidex:2.0.1'
 }

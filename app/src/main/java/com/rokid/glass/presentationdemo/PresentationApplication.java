@@ -2,10 +2,13 @@ package com.rokid.glass.presentationdemo;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.widget.Toast;
+
+import androidx.multidex.MultiDex;
 
 import com.jeremyliao.liveeventbus.LiveEventBus;
 import com.rokid.facelib.RokidFace;
@@ -44,6 +47,12 @@ public class PresentationApplication extends Application {
         initEventBus();
 
         fixDisplay();
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     private void fixDisplay() {

@@ -21,7 +21,6 @@ import com.rokid.glass.libbase.faceid.FaceIdManager;
 import com.rokid.glass.libbase.faceid.FaceRecogRecordManager;
 import com.rokid.glass.libbase.logger.Logger;
 import com.rokid.glass.libbase.plate.PlateManager;
-import com.rokid.glass.libbase.router.Router;
 import com.rokid.glass.libbase.utils.FileUtils;
 import com.rokid.glass.libbase.utils.PropertiesUtils;
 import com.rokid.glass.libbase.utils.ThreadPoolHelper;
@@ -41,7 +40,6 @@ public class PresentationApplication extends Application {
         initDir();
         initFaceManager();
         loadModules();
-        initRouter();
         initDb();
         preloadSomeData();
         initEventBus();
@@ -130,9 +128,6 @@ public class PresentationApplication extends Application {
         BaseLibrary.initialize(this);
     }
 
-    private void initRouter() {
-        Router.getInstance().init(this);
-    }
 
     private void initDb() {
         FaceDataManager.getInstance().init(this);

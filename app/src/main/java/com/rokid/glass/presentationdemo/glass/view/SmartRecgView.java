@@ -19,7 +19,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.github.florent37.viewanimator.ViewAnimator;
 import com.rokid.facelib.model.FaceDO;
 import com.rokid.glass.libbase.BaseLibrary;
 import com.rokid.glass.libbase.faceid.FaceIdManager;

@@ -1,5 +1,9 @@
 apply plugin: 'com.android.library'
 
+ext {
+    versionNameExt = "1.0.1"
+    versionCodeExt = 101
+}
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -7,8 +11,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode versionCodeExt
+        versionName versionNameExt
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
         javaCompileOptions {
@@ -47,7 +51,9 @@ dependencies {
     // optional - RxJava support for Room
     api "androidx.room:room-rxjava2:$room_version"
     // optional - Guava support for Room, including Optional and ListenableFuture
-    api "androidx.room:room-guava:$room_version"
+    api ("androidx.room:room-guava:$room_version"){
+        exclude group: 'com.google.code.findbugs'
+    }
 
 
     api 'com.google.code.gson:gson:2.8.1'
@@ -82,4 +88,37 @@ dependencies {
 
     api files('libs/pcassistant-release.aar')
 
+}
+
+apply plugin: 'rokid-maven'
+rokid {
+    maven {
+        groupId = 'com.rokid.glass.mobile'
+        artifactId = "base"
+        version = versionNameExt
+
+        repository {
+            url = 'http://appmaven.rokid-inc.com/repository/maven-releases/'
+
+            sourcesJar = true
+            javadocJar = false
+        }
+
+        snapshotRepository {
+            url = 'http://appmaven.rokid-inc.com/repository/maven-snapshots'
+
+            sourcesJar = true
+            javadocJar = false
+        }
+
+        bintray {
+            repo = "maven"
+            userOrg = "rokid"
+            name = "Rokid_Glass_Base"
+            desc = 'Rokid Glass Base for Android'
+            websiteUrl = "https://www.rokid.com"
+            vcsUrl = "https://www.rokid.com"
+        }
+
+    }
 }

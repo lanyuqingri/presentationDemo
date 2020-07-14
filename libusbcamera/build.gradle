@@ -1,5 +1,9 @@
 apply plugin: 'com.android.library'
 
+ext {
+    versionNameExt = "1.0.1"
+    versionCodeExt = 101
+}
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -7,8 +11,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode versionCodeExt
+        versionName versionNameExt
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
         // "armeabi-v7a" can adapter most of the devices
@@ -36,3 +40,37 @@ dependencies {
     api files('libs/common-4.1.1.aar')
 
 }
+
+apply plugin: 'rokid-maven'
+rokid {
+    maven {
+        groupId = 'com.rokid.glass.mobile'
+        artifactId = "usbcamera"
+        version = versionNameExt
+
+        repository {
+            url = 'http://appmaven.rokid-inc.com/repository/maven-releases/'
+
+            sourcesJar = true
+            javadocJar = false
+        }
+
+        snapshotRepository {
+            url = 'http://appmaven.rokid-inc.com/repository/maven-snapshots'
+
+            sourcesJar = true
+            javadocJar = false
+        }
+
+        bintray {
+            repo = "maven"
+            userOrg = "rokid"
+            name = "Rokid_Glass_libusbcamera"
+            desc = 'Rokid Glass uvc camera for Android'
+            websiteUrl = "https://www.rokid.com"
+            vcsUrl = "https://www.rokid.com"
+        }
+
+    }
+}
+

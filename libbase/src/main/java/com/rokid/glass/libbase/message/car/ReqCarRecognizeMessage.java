@@ -13,6 +13,7 @@ import java.util.Arrays;
 public class ReqCarRecognizeMessage extends CarRecognizeMessage {
 
     private String plate;
+    private String plateColor;
     private byte[] plateImage;
     private int width;
     private int height;
@@ -81,5 +82,13 @@ public class ReqCarRecognizeMessage extends CarRecognizeMessage {
                 ", mDirection=" + mDirection +
                 ", mResultCode=" + mResultCode +
                 '}';
+    }
+
+    public String getPlateColor() {
+        return plateColor;
+    }
+
+    public void setPlateColor(String plateColor) {
+        this.plateColor = plateColor;
     }
 }

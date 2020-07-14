@@ -1,0 +1,232 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/transparent</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorAccent">@color/transparent</item>
+    </style>
+
+    <style name="LauncherTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowShowWallpaper">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:colorEdgeEffect">#FF757575</item>
+        <item name="isLightTheme">false</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="dartTheme" parent="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+
+    </style>
+    <style name="RokidGlass"></style>
+
+
+    <style name="RokidGlass.Dialog">
+        <item name="android:windowAnimationStyle">@style/RokidGlass.Dialog.WindowAnimation</item>
+
+        <item name="android:backgroundDimEnabled">true</item> <!-- 背景内容模糊 -->
+    </style>
+
+    <style name="RokidGlass.Dialog.WindowAnimation">
+        <item name="android:windowEnterAnimation">@anim/dialog_window_in</item>
+        <item name="android:windowExitAnimation">@anim/dialog_window_out</item>
+    </style>
+
+    <style name="RokidGlass.Dialog.Title">
+        <item name="android:textSize">@dimen/rokid_glass_dialog_title_text_size</item>
+        <item name="android:lineSpacingMultiplier">1.3</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:maxEms">16</item>
+        <item name="android:textColor">@color/rokid_glass_dialog_title_text_color</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="RokidGlass.Dialog.Button">
+        <item name="android:textSize">@dimen/rokid_glass_dialog_button_text_size</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:maxEms">12</item>
+        <item name="android:textColor">@color/rokid_glass_dialog_button_text_color</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:paddingStart">@dimen/rokid_glass_dialog_button_padding_horizontal</item>
+        <item name="android:paddingEnd">@dimen/rokid_glass_dialog_button_padding_horizontal</item>
+        <item name="android:paddingTop">@dimen/rokid_glass_dialog_button_padding_vertical</item>
+        <item name="android:paddingBottom">@dimen/rokid_glass_dialog_button_padding_vertical</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="RokidGlass.Dialog.Press">
+        <item name="android:textSize">@dimen/rokid_glass_dialog_title_text_size</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:maxEms">12</item>
+        <item name="android:layout_gravity">center_horizontal|top</item>
+        <item name="android:paddingBottom">@dimen/rokid_glass_dialog_press_top_padding</item>
+        <item name="android:drawablePadding">@dimen/rokid_glass_dialog_press_drawable_padding</item>
+        <item name="android:textColor">@color/rokid_glass_dialog_title_text_color</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="RokidGlass.GlassButton">
+        <item name="android:textSize">@dimen/glass_button_text_size</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:maxEms">12</item>
+        <item name="android:textColor">@color/common_focused_color</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:paddingTop">@dimen/glass_button_padding_top</item>
+        <item name="android:paddingBottom">@dimen/glass_button_padding_bottom</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <!-- text style -->
+    <style name="Text">
+        <item name="android:textColor">@color/common_light_text_color</item>
+    </style>
+
+    <style name="Text.Thin">
+        <item name="android:textColor">@color/common_text_color</item>
+        <item name="android:textSize">@dimen/glass_thin_text_size</item>
+    </style>
+
+    <style name="Text.ThinLight">
+        <item name="android:textColor">@color/common_light_text_color</item>
+        <item name="android:textSize">@dimen/glass_thin_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.Small">
+        <item name="android:textColor">@color/common_text_color</item>
+        <item name="android:textSize">@dimen/glass_small_text_size</item>
+    </style>
+
+    <style name="Text.SmallLight">
+        <item name="android:textSize">@dimen/glass_small_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.SmallDark">
+        <item name="android:textColor">@color/common_text_color</item>
+        <item name="android:textSize">@dimen/glass_small_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.Normal">
+        <item name="android:textColor">@color/common_text_color</item>
+        <item name="android:textSize">@dimen/glass_text_size</item>
+    </style>
+
+    <style name="Text.NormalLight">
+        <item name="android:textColor">@color/common_light_text_color</item>
+        <item name="android:textSize">@dimen/glass_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.MediumLight">
+        <item name="android:textColor">@color/common_light_text_color</item>
+        <item name="android:textSize">@dimen/glass_medium_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.LargeLight">
+        <item name="android:textColor">@color/common_light_text_color</item>
+        <item name="android:textSize">@dimen/glass_large_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.LargerLight" parent="Text">
+        <item name="android:textColor">@color/common_light_text_color</item>
+        <item name="android:textSize">@dimen/glass_larger_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- glass button-->
+    <style name="RokidGlass.Button" parent="@style/Text.NormalLight">
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:maxEms">12</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="AppBarStyle">
+        <item name="android:paddingTop">@dimen/status_bar_padding</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/app_bar_height</item>
+    </style>
+
+    <style name="BackPressStyle">
+        <item name="android:layout_width">@dimen/back_arrow_21dp</item>
+        <item name="android:layout_height">@dimen/back_arrow_21dp</item>
+        <item name="android:layout_marginStart">@dimen/back_arrow_10dp</item>
+        <item name="android:layout_marginTop">@dimen/back_arrow_32dp</item>
+        <item name="android:src">@mipmap/back_press_icon</item>
+        <item name="android:background">@drawable/icon_back_shape</item>
+        <item name="android:scaleType">center</item>
+    </style>
+
+    <style name="AddIconStyle">
+        <item name="android:layout_width">@dimen/add_icon_size</item>
+        <item name="android:layout_height">@dimen/add_icon_size</item>
+        <item name="android:layout_marginTop">@dimen/add_icon_margin_top</item>
+        <item name="android:layout_marginEnd">@dimen/add_icon_margin_end</item>
+        <item name="android:src">@mipmap/photo_add_icon</item>
+        <item name="android:scaleType">center</item>
+        <item name="android:background">@drawable/icon_back_shape</item>
+    </style>
+
+    <style name="ImportTextStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/import_text_left_margin_top</item>
+        <item name="android:textColor">@color/add_face_default</item>
+        <item name="android:textSize">@dimen/import_text_left_size</item>
+    </style>
+    <style name="ImportTextStyleLeft" parent="ImportTextStyle">
+        <item name="android:layout_marginTop">@dimen/import_text_left_margin_top</item>
+    </style>
+    <style name="ImportTextStyleRight" parent="ImportTextStyle">
+        <item name="android:cursorVisible">true</item>
+        <item name="maxLines">1</item>
+        <item name="textColor">@color/white</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="textSize">16sp</item>
+        <item name="android:textColorHint">@color/hint_text_color</item>
+    </style>
+
+    <style name="RecordStyleTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="RecordStyleSummary">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/tv_record_summary</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TabItemTheme" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">30sp</item>
+    </style>
+
+
+</resources>

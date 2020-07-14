@@ -776,6 +776,9 @@ public class FaceIdManager {
     }
 
     public DeployDbInfo getDeployDbInfoByKey(String keyStr) {
+        if(faceIdDatabase == null || faceIdDatabase.deployTaskInfoDao() == null){
+            return null;
+        }
         DeployDbInfo info = faceIdDatabase.deployTaskInfoDao().getDeployDbInfoByKey(keyStr);
         return info;
     }

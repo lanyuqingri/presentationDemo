@@ -32,8 +32,8 @@
     </style>
 
     <style name="RokidGlass.Dialog.WindowAnimation">
-        <item name="android:windowEnterAnimation">@anim/dialog_window_in</item>
-        <item name="android:windowExitAnimation">@anim/dialog_window_out</item>
+<!--        <item name="android:windowEnterAnimation">@anim/dialog_window_in</item>-->
+<!--        <item name="android:windowExitAnimation">@anim/dialog_window_out</item>-->
     </style>
 
     <style name="RokidGlass.Dialog.Title">
@@ -177,7 +177,7 @@
         <item name="android:layout_marginStart">@dimen/back_arrow_10dp</item>
         <item name="android:layout_marginTop">@dimen/back_arrow_32dp</item>
         <item name="android:src">@mipmap/back_press_icon</item>
-        <item name="android:background">@drawable/icon_back_shape</item>
+<!--        <item name="android:background">@drawable/icon_back_shape</item>-->
         <item name="android:scaleType">center</item>
     </style>
 
@@ -188,7 +188,7 @@
         <item name="android:layout_marginEnd">@dimen/add_icon_margin_end</item>
         <item name="android:src">@mipmap/photo_add_icon</item>
         <item name="android:scaleType">center</item>
-        <item name="android:background">@drawable/icon_back_shape</item>
+<!--        <item name="android:background">@drawable/icon_back_shape</item>-->
     </style>
 
     <style name="ImportTextStyle">
@@ -203,10 +203,10 @@
     </style>
     <style name="ImportTextStyleRight" parent="ImportTextStyle">
         <item name="android:cursorVisible">true</item>
-        <item name="maxLines">1</item>
-        <item name="textColor">@color/white</item>
+<!--        <item name="maxLines">1</item>-->
+<!--        <item name="textColor">@color/white</item>-->
         <item name="android:textCursorDrawable">@null</item>
-        <item name="textSize">16sp</item>
+<!--        <item name="textSize">16sp</item>-->
         <item name="android:textColorHint">@color/hint_text_color</item>
     </style>
 
@@ -224,7 +224,7 @@
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="TabItemTheme" parent="TextAppearance.Design.Tab">
+    <style name="TabItemTheme">
         <item name="android:textSize">30sp</item>
     </style>
 

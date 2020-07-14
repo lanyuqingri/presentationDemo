@@ -1,0 +1,81 @@
+apply plugin: 'com.android.library'
+
+ext {
+    versionNameExt = "1.0.1"
+    versionCodeExt = 101
+}
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode versionCodeExt
+        versionName versionNameExt
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    api('com.rokid.glass.mobile:viewcomponent:1.0.X-SNAPSHOT')
+    api('com.rokid.glass.mobile:base:1.0.X-SNAPSHOT')
+    api('com.rokid.glass.mobile:usbcamera:1.0.X-SNAPSHOT')
+    api files('libs/common-4.1.1.aar')
+}
+
+
+apply plugin: 'rokid-maven'
+rokid {
+    maven {
+        groupId = 'com.rokid.glass.mobile'
+        artifactId = "alliance"
+        version = versionNameExt
+
+        repository {
+            url = 'http://appmaven.rokid-inc.com/repository/maven-releases/'
+
+            sourcesJar = true
+            javadocJar = false
+        }
+
+        snapshotRepository {
+            url = 'http://appmaven.rokid-inc.com/repository/maven-snapshots'
+
+            sourcesJar = true
+            javadocJar = false
+        }
+
+        bintray {
+            repo = "maven"
+            userOrg = "rokid"
+            name = "Rokid_Glass_ViewComponent"
+            desc = 'Rokid Glass view component for Android'
+            websiteUrl = "https://www.rokid.com"
+            vcsUrl = "https://www.rokid.com"
+        }
+
+    }
+}

@@ -10,9 +10,11 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/alliance" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/libbase" />
             <option value="$PROJECT_DIR$/libusbcamera" />
+            <option value="$PROJECT_DIR$/viewcomponent" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

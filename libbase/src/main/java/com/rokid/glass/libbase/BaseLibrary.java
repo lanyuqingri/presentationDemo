@@ -11,6 +11,7 @@ import androidx.core.app.ActivityOptionsCompat;
 
 import com.rokid.glass.libbase.config.AppConfig;
 import com.rokid.glass.libbase.faceid.SmartRecgConfig;
+import com.rokid.glass.libbase.music.MusicPlayHelper;
 import com.rokid.glass.libbase.utils.DefaultSPHelper;
 import com.rokid.glass.libbase.utils.DeviceInfoUtils;
 import com.rokid.glass.libbase.utils.ViewUtils;
@@ -49,7 +50,7 @@ public class BaseLibrary {
 
     public static void initialize(Application application) {
         getInstance().application = application;
-
+        MusicPlayHelper.getInstance().init(application);
         application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
@@ -143,7 +144,7 @@ public class BaseLibrary {
         isSingleFaceRecg.set(DefaultSPHelper.getInstance().getBoolean(SmartRecgConfig.KEY_SINGLE_FACE_RECG_OPEN,true));
         isSingleFaceOnlineRecg.set(DefaultSPHelper.getInstance().getBoolean(SmartRecgConfig.KEY_SINGLE_RECG_ONLINE,true));
         isPlateRecg.set(DefaultSPHelper.getInstance().getBoolean(SmartRecgConfig.KEY_PLATE_RECG_OPEN,true));
-        isPlateOnlineRecg.set(DefaultSPHelper.getInstance().getBoolean(SmartRecgConfig.KEY_PLATE_RECG_ONLINE,false));
+        isPlateOnlineRecg.set(DefaultSPHelper.getInstance().getBoolean(SmartRecgConfig.KEY_PLATE_RECG_ONLINE,true));
     }
 
     public void setMultiFaceRecgEnable(boolean isEnable){

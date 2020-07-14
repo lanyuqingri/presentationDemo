@@ -39,7 +39,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation('com.rokid.glass.mobile:base:1.0.X-SNAPSHOT')
+    implementation('com.rokid.glass.mobile:base:1.0.1')
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }
 
@@ -76,5 +76,29 @@ rokid {
         }
 
     }
+}
+
+apply plugin: 'com.novoda.bintray-release'
+//生成Javadoc文档
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+//解决 JavaDoc 中文注释生成失败的问题
+tasks.withType(Javadoc) {
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+}
+publish {
+    userOrg = "rokid"
+    groupId = "com.rokid.glass.mobile"
+    artifactId = "viewcomponent"
+    publishVersion = versionNameExt
+    desc = 'rokid viewcomponent modue for mobile shellnon'
+    website = 'https://www.rokid.com'
+    bintrayUser = "lanyuqingri"
+    bintrayKey = "1bac47bdd972c4a42e9cf65572256740678e953e"
+    dryRun = false
 }
 

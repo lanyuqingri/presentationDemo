@@ -40,9 +40,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    api('com.rokid.glass.mobile:viewcomponent:1.0.X-SNAPSHOT')
-    api('com.rokid.glass.mobile:base:1.0.X-SNAPSHOT')
-    api('com.rokid.glass.mobile:usbcamera:1.0.X-SNAPSHOT')
+    api('com.rokid.glass.mobile:viewcomponent:1.0.1')
+    api('com.rokid.glass.mobile:base:1.0.1')
+    api('com.rokid.glass.mobile:usbcamera:1.0.1')
     api files('libs/common-4.1.1.aar')
 }
 
@@ -71,11 +71,35 @@ rokid {
         bintray {
             repo = "maven"
             userOrg = "rokid"
-            name = "Rokid_Glass_ViewComponent"
-            desc = 'Rokid Glass view component for Android'
+            name = "Rokid_Glass_alliance"
+            desc = 'Rokid Glass alliance for Android'
             websiteUrl = "https://www.rokid.com"
             vcsUrl = "https://www.rokid.com"
         }
 
     }
+}
+
+apply plugin: 'com.novoda.bintray-release'
+//生成Javadoc文档
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+//解决 JavaDoc 中文注释生成失败的问题
+tasks.withType(Javadoc) {
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+}
+publish {
+    userOrg = "rokid"
+    groupId = "com.rokid.glass.mobile"
+    artifactId = "alliance"
+    publishVersion = versionNameExt
+    desc = 'rokid alliance modue for mobile shellnon'
+    website = 'https://www.rokid.com'
+    bintrayUser = "lanyuqingri"
+    bintrayKey = "1bac47bdd972c4a42e9cf65572256740678e953e"
+    dryRun = false
 }

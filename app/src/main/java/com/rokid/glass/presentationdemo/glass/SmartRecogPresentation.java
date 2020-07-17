@@ -64,7 +64,6 @@ public class SmartRecogPresentation extends Presentation {
 
     public SmartRecogPresentation(Context outerContext, Display display, int theme) {
         super(outerContext, display, theme);
-        BaseLibrary.getInstance().initSmartRecgConfig();
         if(CameraParams.PREVIEW_WIDTH == 1280) {
             roiRect = new Rect(200, 160, 850, 650);
         } else if (CameraParams.PREVIEW_WIDTH == 1920) {
@@ -114,7 +113,6 @@ public class SmartRecogPresentation extends Presentation {
         if (!isMultiFaceRecg && !isSingleFaceRecg) {
             return;
         }
-        sFaceConf = new SFaceConf().setRecog(true, FaceIdManager.PATH_ENGINE).setOutTime(3000).setRecogInterval(5000).setTargetScore(qualityValue);
         dFaceConf = new VideoDFaceConf().setSize(PREVIEW_WIDTH, PREVIEW_HEIGHT).setPoolNum(10).setDetectMaxFace(10);
         if (!isMultiFaceRecg) {
             dFaceConf.setRoi(roiRect);
@@ -137,7 +135,7 @@ public class SmartRecogPresentation extends Presentation {
                 Logger.d("deploy package expired!");
             }
         }
-        sFaceConf = new SFaceConf().setRecog(recognize, FaceIdManager.PATH_ENGINE).setOutTime(3000).setRecogInterval(5000).setTargetScore(qualityValue);
+        sFaceConf = new SFaceConf().setRecog(recognize, FaceIdManager.PATH_ENGINE).setOutTime(1500).setRecogInterval(5000).setTargetScore(qualityValue);
         videoFace.sconfig(sFaceConf);
         videoFace.startTrack(new RokidFaceCallback() {
             @Override

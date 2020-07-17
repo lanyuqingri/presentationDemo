@@ -49,7 +49,7 @@ public class BaseLibrary {
 
     public static void initialize(Application application) {
         getInstance().application = application;
-
+        BaseLibrary.getInstance().initSmartRecgConfig();
         application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
@@ -139,7 +139,7 @@ public class BaseLibrary {
     }
 
     public void initSmartRecgConfig(){
-        isMultiFaceRecg.set(DefaultSPHelper.getInstance().getBoolean(SmartRecgConfig.KEY_MULTI_FACE_RECG_OPEN,false));
+        isMultiFaceRecg.set(DefaultSPHelper.getInstance().getBoolean(SmartRecgConfig.KEY_MULTI_FACE_RECG_OPEN,true));
         isSingleFaceRecg.set(DefaultSPHelper.getInstance().getBoolean(SmartRecgConfig.KEY_SINGLE_FACE_RECG_OPEN,true));
         isSingleFaceOnlineRecg.set(DefaultSPHelper.getInstance().getBoolean(SmartRecgConfig.KEY_SINGLE_RECG_ONLINE,true));
         isPlateRecg.set(DefaultSPHelper.getInstance().getBoolean(SmartRecgConfig.KEY_PLATE_RECG_OPEN,true));

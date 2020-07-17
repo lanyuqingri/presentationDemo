@@ -119,7 +119,12 @@ public class SmartRecgPresenter implements OnlineResp {
             if(rectFaceModel == null || rectFaceModel.getFaceList() == null || rectFaceModel.getFaceList().size() <= 0){
                 //无单人识别数据,如果多人识别未打开，同时车牌识别也没信息需要展示，则继续识别，此无人脸信息就不再展示了
                 if(!isMultiFaceRecg && !isOnineRecging.get() && !mSmartRecgView.isCarShowing()){
-                    mSmartRecgView.showNormalRect();
+                    mSmartRecgView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mSmartRecgView.showNormalRect();
+                        }
+                    });
                 }
             } else {
                 FaceDO maxSingleFaceDO = rectFaceModel.getMaxFace();
@@ -131,6 +136,9 @@ public class SmartRecgPresenter implements OnlineResp {
                     Logger.d("handleFaceModel--------> multi face recognition && single face is too small");
                 } else {
                     //需要对单人进行核查
+                    int len = rawData.length;
+                    byte[] originData = new byte[len];
+                    System.arraycopy(rawData,0,originData,0,len);
                     if(isOnlineSingleRecg){
                         //单人在线
                         isOnineRecging.set(true);
@@ -138,12 +146,17 @@ public class SmartRecgPresenter implements OnlineResp {
                         ThreadPoolHelper.getInstance().threadExecute(new Runnable() {
                             @Override
                             public void run() {
-                                handleSingleFaceNetWork(rawData, maxFaceDO);
+                                handleSingleFaceNetWork(originData, maxFaceDO);
                             }
                         });
                     } else {
                         //单人离线
-                        handleSingleFaceLocal(maxSingleFaceDO,rawData);
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                handleSingleFaceLocal(maxSingleFaceDO,originData);
+                            }
+                        });
                     }
                 }
             }
@@ -225,12 +238,12 @@ public class SmartRecgPresenter implements OnlineResp {
             mRecgCaptureBitmap = BitmapUtils.nv21ToBitmap(rawdata,PREVIEW_WIDTH,PREVIEW_HEIGHT);
             doNetWork(bm);
         }else{
-            if(targetFace.sharpness > mCurrentSharpness && targetFace.faceScore > 0.75){
+            if(targetFace.quality > mCurrentSharpness && targetFace.faceScore > 0.75){
                 Rect faceRect = targetFace.toRect(PREVIEW_WIDTH,PREVIEW_HEIGHT);
                 Rect finalRect = FaceRectUtils.scaleRect(faceRect,PREVIEW_WIDTH,PREVIEW_HEIGHT,1.6f);
                 Logger.i("finalRect:"+finalRect);
                 mBestBitmap = BitmapUtils.nv21ToBitmap(rawdata,PREVIEW_WIDTH,PREVIEW_HEIGHT,finalRect);
-                mCurrentSharpness = targetFace.sharpness;
+                mCurrentSharpness = targetFace.quality;
             }
             Logger.i("targetFace.trackInterval:" + targetFace.trackInterval);
             if(targetFace.trackInterval > 2000) {

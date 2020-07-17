@@ -3,8 +3,6 @@ package com.rokid.glass.libbase.faceid;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Rect;
 import android.os.Handler;
 import android.text.TextUtils;
 
@@ -12,7 +10,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.rokid.facelib.ImageRokidFace;
 import com.rokid.facelib.api.IImageRokidFace;
-import com.rokid.facelib.conf.DFaceConf;
+import com.rokid.facelib.conf.DetectFaceConf;
 import com.rokid.facelib.face.DbAddResult;
 import com.rokid.facelib.face.FaceDbHelper;
 import com.rokid.glass.libbase.BaseLibrary;
@@ -90,7 +88,7 @@ public class FaceIdManager {
 
                 // 图片人脸识别
                 mImageFace = ImageRokidFace.create(context);
-                mImageFace.dconfig(new DFaceConf());
+                mImageFace.dconfig(new DetectFaceConf());
 
                 mReloadHandler = new Handler(context.getMainLooper());
 

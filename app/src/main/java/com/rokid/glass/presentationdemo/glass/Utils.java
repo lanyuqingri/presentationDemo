@@ -105,7 +105,7 @@ public class Utils{
         singleFaceRecord.gmtRecg = System.currentTimeMillis();
         singleFaceRecord.pose = poseFloatToString(faceDO.pose);
         singleFaceRecord.userInfoScore = faceDO.userInfoScore;
-        singleFaceRecord.faceScore = faceDO.sharpness;
+        singleFaceRecord.faceScore = faceDO.quality;
         singleFaceRecord.isOnline = false;
 
         FaceRecogRecordManager.getInstance().addSingleFaceRecord(singleFaceRecord);
@@ -146,7 +146,7 @@ public class Utils{
         deployFaceRecord.gmtRecg = System.currentTimeMillis();
         deployFaceRecord.pose = poseFloatToString(faceDO.pose);
         deployFaceRecord.userInfoScore = faceDO.userInfoScore;
-        deployFaceRecord.faceScore = faceDO.sharpness;
+        deployFaceRecord.faceScore = faceDO.quality;
         deployFaceRecord.isOnline = false;
 
         FaceRecogRecordManager.getInstance().addDeployFaceRecord(deployFaceRecord);

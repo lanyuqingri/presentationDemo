@@ -150,13 +150,13 @@ public class FaceUtil {
                 copyFace.trackId = faceDO.trackId;
                 copyFace.goodQuality = faceDO.goodQuality;
                 copyFace.goodPose = faceDO.goodPose;
-                copyFace.goodSharpness = faceDO.goodSharpness;
+                copyFace.qualityGoodEnough = faceDO.qualityGoodEnough;
                 if(faceDO.pose != null)
                     copyFace.pose = faceDO.pose.clone();
                 if(faceDO.pts != null)
                     copyFace.pts = faceDO.pts.clone();
                 copyFace.userInfoScore = faceDO.userInfoScore;
-                copyFace.sharpness = faceDO.sharpness;
+                copyFace.quality = faceDO.quality;
                 copyFace.recogOutTime = faceDO.recogOutTime;
                 copyFace.trackInterval = faceDO.trackInterval;
                 copyFace.faceScore = faceDO.faceScore;

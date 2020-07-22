@@ -51,7 +51,7 @@ dependencies {
 
 
     api 'com.google.code.gson:gson:2.8.1'
-    api ('com.rokid.glass:facelib:4.5.3.1'){
+    api ('com.rokid.glass:facelib:4.12.3.2'){
         exclude group: 'com.android.support'
         exclude group: 'android.arch.persistence.room'
     }

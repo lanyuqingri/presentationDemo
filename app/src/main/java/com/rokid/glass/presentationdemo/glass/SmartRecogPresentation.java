@@ -28,6 +28,7 @@ import com.rokid.glass.libbase.faceid.FaceIdManager;
 import com.rokid.glass.libbase.faceid.database.DeployDbInfo;
 import com.rokid.glass.libbase.logger.Logger;
 import com.rokid.glass.libbase.utils.DefaultSPHelper;
+import com.rokid.glass.libbase.utils.FaceUtil;
 import com.rokid.glass.libbase.utils.PlateUtils;
 import com.rokid.glass.lpr_sdk.LPRConfig;
 import com.rokid.glass.lpr_sdk.RokidLPR;
@@ -141,6 +142,7 @@ public class SmartRecogPresentation extends Presentation {
             @Override
             public void onFaceCallback(final FaceModel model) {
                 // 检测到有人脸数据则展示人脸数据
+                FaceModel faceModel = FaceUtil.copyFaceModel(model);
                 mSmartRecgPresenter.handleFaceModel(model, videoFace.getBytes());
 //                mHandler.post(new Runnable() {
 //                    @Override

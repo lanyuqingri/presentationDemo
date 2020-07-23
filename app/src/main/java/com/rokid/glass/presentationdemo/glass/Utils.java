@@ -364,6 +364,27 @@ public class Utils{
         }
         return fPose;
     }
+
+    public static FaceDO copyFaceDO(FaceDO faceDO){
+        FaceDO faceDO1 = new FaceDO();
+        faceDO1.goodPose = faceDO.goodPose;
+        faceDO1.goodQuality = faceDO.goodQuality;
+        faceDO1.quality = faceDO.quality;
+        faceDO1.qualityGoodEnough = faceDO.qualityGoodEnough;
+        faceDO1.faceRectF = faceDO.faceRectF;
+        faceDO1.recogOutTime = faceDO.recogOutTime;
+        faceDO1.goodPose = faceDO.goodPose;
+        faceDO1.featid = faceDO.featid;
+        faceDO1.faceAlignTime = faceDO.faceAlignTime;
+        faceDO1.faceRecogTime = faceDO.faceRecogTime;
+        faceDO1.trackId = faceDO.trackId;
+        faceDO1.trackInterval = faceDO.trackInterval;
+        faceDO1.pose = faceDO.pose;
+        faceDO1.pts = faceDO.pts;
+        faceDO1.recogBitmap = faceDO.recogBitmap;
+        faceDO1.userInfoScore = faceDO.userInfoScore;
+        return faceDO1;
+    }
 }
 
 

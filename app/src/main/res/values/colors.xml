@@ -36,11 +36,11 @@
     <color name="glass_imu_count_text_color">#FF737373</color>
 
     <!-- color -->
-    <color name="common_text_color">#80FFFFFF</color>
-    <color name="common_light_text_color">#B3FFFFFF</color>
+    <color name="common_text_color">#FFFFFFFF</color>
+    <color name="common_light_text_color">#FFFFFFFF</color>
 
 
-    <color name="glass_button_focused_text_color">#CCFFFFFF</color>
+    <color name="glass_button_focused_text_color">#FFFFFFFF</color>
     <color name="glass_button_text_color">#99FFFFFF</color>
 
     <color name="transparent">#00000000</color>

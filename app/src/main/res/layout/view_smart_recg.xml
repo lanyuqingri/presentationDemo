@@ -33,7 +33,7 @@
         app:layout_constraintRight_toRightOf="@id/iv_seat_rect"
         app:layout_constraintBottom_toTopOf="@id/iv_seat_rect"
         app:layout_constraintTop_toTopOf="@id/iv_seat_rect"
-        android:textColor="#7fffffff" />
+        android:textColor="#ffffffff" />
     <TextView android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="25dp"
@@ -50,7 +50,7 @@
         app:layout_constraintLeft_toRightOf="@+id/iv_seat_rect"
         android:layout_marginTop="85dp"
         android:text="@string/s_recog_base_pose"
-        android:textColor="#FF560B"
+        android:textColor="#FFFF560B"
         android:textSize="21dp"
         android:id="@+id/tv_bad_face"
         android:visibility="gone"

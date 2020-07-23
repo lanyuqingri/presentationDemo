@@ -162,7 +162,7 @@ public class FaceUtil {
                 copyFace.faceScore = faceDO.faceScore;
                 copyFace.featid = faceDO.featid;
                 // 2019-12-18 识别图暂时不需要，没有用到。算法支持RGB图之后需要做拷贝操作
-//                copyFace.recogBitmap = faceDO.recogBitmap;
+                copyFace.recogBitmap = faceDO.recogBitmap;
                 copy.addFace(copyFace);
             }
         }

@@ -10,10 +10,10 @@ import java.io.File;
  */
 public class FaceConstants {
 
-    public static final int WHITE_COLOR = Color.parseColor("#7fffffff");
-    public static final int GRAY_WHITE_COLOR = Color.parseColor("#80ffffff");
+    public static final int WHITE_COLOR = Color.parseColor("#ffffffff");
+    public static final int GRAY_WHITE_COLOR = Color.parseColor("#ccffffff");
     public static final int GREEN_COLOR = Color.parseColor("#FF5A2AFF");
-    public static final int BLUE_COLOR = Color.parseColor("#b47fd125");
+    public static final int BLUE_COLOR = Color.parseColor("#ff7fd125");
     public static final int RED_COLOR = Color.parseColor("#FFFF5821");
 
     public final static String FACE_DB_COPY_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator +"facedb/";

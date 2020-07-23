@@ -104,14 +104,10 @@ public class SmartRecgPresenter implements OnlineResp {
             Logger.d("handleFaceModel-------> model is empty");
             return;
         }
+        Logger.d("handleFaceModel-------> model is not empty");
         boolean isMultiFaceRecg = BaseLibrary.getInstance().isMultiFaceRecgEnable();
         if(isMultiFaceRecg && mMultiFaceView != null){
-            mMultiFaceView.post(new Runnable() {
-                @Override
-                public void run() {
-                    mMultiFaceView.setFaceModel(model);
-                }
-            });
+            mMultiFaceView.setFaceModel(model);
         }
         int len = rawData.length;
         byte[] originData = new byte[len];
@@ -223,9 +219,10 @@ public class SmartRecgPresenter implements OnlineResp {
                 ThreadPoolHelper.getInstance().threadExecute(new Runnable() {
                     @Override
                     public void run() {
-                        Rect faceRect = targetFace.toRect(PREVIEW_WIDTH,PREVIEW_HEIGHT);
-                        Rect finalRect = FaceRectUtils.scaleRect(faceRect,PREVIEW_WIDTH,PREVIEW_HEIGHT,1.6f);
-                        Bitmap bm = BitmapUtils.nv21ToBitmap(rawData,PREVIEW_WIDTH,PREVIEW_HEIGHT,finalRect);
+//                        Rect faceRect = targetFace.toRect(PREVIEW_WIDTH,PREVIEW_HEIGHT);
+//                        Rect finalRect = FaceRectUtils.scaleRect(faceRect,PREVIEW_WIDTH,PREVIEW_HEIGHT,1.6f);
+//                        Bitmap bm = BitmapUtils.nv21ToBitmap(rawData,PREVIEW_WIDTH,PREVIEW_HEIGHT,finalRect);
+                        Bitmap bm = targetFace.recogBitmap;
                         Utils.saveFaceOfflineInfo(bm, info, targetFace);
                         RecordMessage recordMessage = Utils.ConvertUserInfo2RecordMessage(info,bm,bm,true);
                         OnlineRecgHelper.getInstance().sendRecordMessage(recordMessage);

@@ -99,11 +99,12 @@ public class MultiFaceView extends View /*implements IBluetoothCallback */{
         // Add try-catch 避免faceModel被异步修改导致crash
         try {
             if (faceModel != null && faceModel.getFaceList() != null && faceModel.getFaceList().size() > 0) {
-//                Logger.i(TAG,"face size:"+faceModel.getFaceList().size());
+//                Logger.i("MultiFaceView-------> onDraw && face size:" + faceModel.getFaceList().size());
                 for (int i = 0; i < faceModel.getFaceList().size(); i++) {
                     FaceDO mFaceDO = faceModel.getFaceList().get(i);
                     if (mFaceDO != null && mFaceDO.faceRectF != null) {
                         drawNormalFace(canvas, mFaceDO);
+                    } else {
                     }
                 }
             }
@@ -142,7 +143,7 @@ public class MultiFaceView extends View /*implements IBluetoothCallback */{
         if (finalRect == null) {
             return;
         }
-//        Logger.i("drawNormalFace"," && faceNumberDo---------——>finalRect:" + finalRect.toString());
+        Logger.i("drawNormalFace"," && faceNumberDo---------——>finalRect:" + finalRect.toString());
         if (faceNumberDo.featid != null) {
             paint.setColor(redColor);
             drawRountRect(canvas, finalRect, paint);
@@ -234,6 +235,7 @@ public class MultiFaceView extends View /*implements IBluetoothCallback */{
 
 
     public void setFaceModel(FaceModel faceModel) {
+//        Logger.d("handleFaceModel  && MultiFaceView-------> setFaceModel is called && drawing = " + drawing);
         if (drawing) {
             return;
         }
@@ -253,8 +255,7 @@ public class MultiFaceView extends View /*implements IBluetoothCallback */{
                 }
             }
             postInvalidate();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             Logger.e("Error: setFaceModel "+e.getMessage());
         }

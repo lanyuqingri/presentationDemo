@@ -66,7 +66,7 @@ public class SmartRecogPresentation extends Presentation {
     public SmartRecogPresentation(Context outerContext, Display display, int theme) {
         super(outerContext, display, theme);
         if(CameraParams.PREVIEW_WIDTH == 1280) {
-            roiRect = new Rect(200, 160, 850, 650);
+            roiRect = new Rect(350, 210, 750, 650);
         } else if (CameraParams.PREVIEW_WIDTH == 1920) {
             roiRect = new Rect(525, 515, 1125, 975);
         }
@@ -114,12 +114,15 @@ public class SmartRecogPresentation extends Presentation {
         if (!isMultiFaceRecg && !isSingleFaceRecg) {
             return;
         }
-        dFaceConf = new VideoDetectFaceConf().setSize(PREVIEW_WIDTH, PREVIEW_HEIGHT).setPoolNum(10).setDetectMaxFace(10);
+        if(dFaceConf == null){
+            dFaceConf = new VideoDetectFaceConf().setSize(PREVIEW_WIDTH, PREVIEW_HEIGHT).setPoolNum(10).setDetectMaxFace(10);
+        }
         if (!isMultiFaceRecg) {
+//            dFaceConf.setSize(PREVIEW_WIDTH, PREVIEW_HEIGHT);
             dFaceConf.setRoi(roiRect);
-            dFaceConf.setSingleRecogModel(true);
+//            dFaceConf.setSingleRecogModel(true);
         } else {
-            dFaceConf.setSingleRecogModel(false);
+//            dFaceConf.setSingleRecogModel(false);
             dFaceConf.setSize(PREVIEW_WIDTH, PREVIEW_HEIGHT);
         }
         videoFace = VideoRokidFace.create(getContext(), dFaceConf);
@@ -143,13 +146,7 @@ public class SmartRecogPresentation extends Presentation {
             public void onFaceCallback(final FaceModel model) {
                 // 检测到有人脸数据则展示人脸数据
                 FaceModel faceModel = FaceUtil.copyFaceModel(model);
-                mSmartRecgPresenter.handleFaceModel(model, videoFace.getBytes());
-//                mHandler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//
-//                    }
-//                });
+                mSmartRecgPresenter.handleFaceModel(faceModel, videoFace.getBytes());
             }
         });
     }
@@ -208,7 +205,7 @@ public class SmartRecogPresentation extends Presentation {
         stopCameraPreview();
         reset();
         initAllView();
-        initPlateSDK();
+        initFaceSDK();
         restartCameraPreview();
     }
 

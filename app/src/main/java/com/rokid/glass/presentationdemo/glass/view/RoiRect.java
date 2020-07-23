@@ -39,7 +39,7 @@ public class RoiRect extends View {
     public RoiRect(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initPaint();
-        color_white = Color.parseColor("#7fffffff");
+        color_white = Color.parseColor("#ffffffff");
         color_blue = Color.parseColor("#FF5A2AFF");
         color_red =  Color.parseColor("#FFFF560B");
     }

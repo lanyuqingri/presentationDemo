@@ -115,15 +115,8 @@ public class RokidSystem {
         float w = ((rectF.right - rectF.left) * previewWidth);
         float h = ((rectF.bottom - rectF.top) * previewHeight);
 
-        int width = ContextUtil.getApplicationContext().getResources().getDisplayMetrics().widthPixels;
-        int height = ContextUtil.getApplicationContext().getResources().getDisplayMetrics().heightPixels;
-//        if (type == Alignment.alignHD) {
-//            width = BASE_WIDTH_HD;
-//            height = BASE_HEIGHT_HD;
-//        } else {
-//            width = BASE_WIDTH_720P;
-//            height = BASE_HEIGHT_720P;
-//        }
+        int width = BASE_WIDTH_720P;
+        int height = BASE_HEIGHT_720P;
 
         int left = (int) ((previewRect.left - rectF.left * previewWidth) * 1.0f / w * width);
         int top = (int) ((previewRect.top - rectF.top * previewHeight) * 1.0f / h * height);
@@ -144,41 +137,19 @@ public class RokidSystem {
      * @return
      */
     public static RectF getAlignmentPercent(final int width, final int height) {
-        Rect rect;
-        if (width == BASE_WIDTH_HD) {
-            rect = getAlignmentBaseRectHD();
-        } else {
-            rect = getAlignmentBaseRect();
-        }
+        Rect rect = getAlignmentBaseRect();;
         return new RectF(rect.left * 1.0f / width, rect.top * 1.0f / height,
                 rect.right * 1.0f / width, rect.bottom * 1.0f / height);
     }
 
     private static RectF getAlignmentRectF(final int previewWidth) {
-        @Alignment.type int type = getBenefitResolution(previewWidth);
-        int width;
-        int height;
-
-        if (type == Alignment.alignHD) {
-            if (noAlignmentHD()) {
-                return null;
-            }
-            width = BASE_WIDTH_HD;
-            height = BASE_HEIGHT_HD;
-        } else {
-            if (noAlignment()) {
-                return null;
-            }
-            width = BASE_WIDTH_720P;
-            height = BASE_HEIGHT_720P;
-        }
-
+        int width = BASE_WIDTH_720P;
+        int height = BASE_HEIGHT_720P;
         return getAlignmentPercent(width, height);
     }
 
     private static @Alignment.type
     int getBenefitResolution(final int width) {
-//        int close2K = Math.abs(BASE_WIDTH_2K - width);
         int closeHD = Math.abs(BASE_WIDTH_HD - width);
         int close720p = Math.abs(BASE_WIDTH - width);
 
@@ -191,18 +162,20 @@ public class RokidSystem {
      * @return
      */
     public static Rect getAlignmentBaseRect() {
-        return new Rect(toInt(getSystemProperty(ALIGNMENT_LEFT)),
-                toInt(getSystemProperty(ALIGNMENT_TOP)),
-                toInt(getSystemProperty(ALIGNMENT_RIGHT)),
-                toInt(getSystemProperty(ALIGNMENT_BOTTOM)));
+        return new Rect(376,174,938,504);
+//        return new Rect(toInt(getSystemProperty(ALIGNMENT_LEFT)),
+//                toInt(getSystemProperty(ALIGNMENT_TOP)),
+//                toInt(getSystemProperty(ALIGNMENT_RIGHT)),
+//                toInt(getSystemProperty(ALIGNMENT_BOTTOM)));
 
     }
 
     public static Rect getAlignmentBaseRectHD() {
-        return new Rect(toInt(getSystemProperty(ALIGNMENT_LEFT_HD)),
-                toInt(getSystemProperty(ALIGNMENT_TOP_HD)),
-                toInt(getSystemProperty(ALIGNMENT_RIGHT_HD)),
-                toInt(getSystemProperty(ALIGNMENT_BOTTOM_HD)));
+        return new Rect(500,200,1700,830);
+//        return new Rect(toInt(getSystemProperty(ALIGNMENT_LEFT_HD)),
+//                toInt(getSystemProperty(ALIGNMENT_TOP_HD)),
+//                toInt(getSystemProperty(ALIGNMENT_RIGHT_HD)),
+//                toInt(getSystemProperty(ALIGNMENT_BOTTOM_HD)));
 
     }
 

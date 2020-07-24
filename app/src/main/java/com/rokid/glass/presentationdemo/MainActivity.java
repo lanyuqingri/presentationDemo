@@ -336,5 +336,7 @@ public class MainActivity extends AppCompatActivity implements CameraDialog.Came
                 mFaceImageView.setImageBitmap(bm);
             }
         });
+
+
     }
 }

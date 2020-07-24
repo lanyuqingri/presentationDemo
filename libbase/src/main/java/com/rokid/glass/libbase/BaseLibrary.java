@@ -140,7 +140,7 @@ public class BaseLibrary {
 
     public void initSmartRecgConfig(){
         isMultiFaceRecg.set(DefaultSPHelper.getInstance().getBoolean(SmartRecgConfig.KEY_MULTI_FACE_RECG_OPEN,true));
-        isSingleFaceRecg.set(DefaultSPHelper.getInstance().getBoolean(SmartRecgConfig.KEY_SINGLE_FACE_RECG_OPEN,true));
+        isSingleFaceRecg.set(DefaultSPHelper.getInstance().getBoolean(SmartRecgConfig.KEY_SINGLE_FACE_RECG_OPEN,false));
         isSingleFaceOnlineRecg.set(DefaultSPHelper.getInstance().getBoolean(SmartRecgConfig.KEY_SINGLE_RECG_ONLINE,true));
         isPlateRecg.set(DefaultSPHelper.getInstance().getBoolean(SmartRecgConfig.KEY_PLATE_RECG_OPEN,true));
         isPlateOnlineRecg.set(DefaultSPHelper.getInstance().getBoolean(SmartRecgConfig.KEY_PLATE_RECG_ONLINE,false));

@@ -162,7 +162,9 @@ public class RokidSystem {
      * @return
      */
     public static Rect getAlignmentBaseRect() {
-        return new Rect(376,174,938,504);
+//        return new Rect(376,174,938,504);
+//        return new Rect(286,194,875,527);
+        return new Rect(306,194,895,527);
 //        return new Rect(toInt(getSystemProperty(ALIGNMENT_LEFT)),
 //                toInt(getSystemProperty(ALIGNMENT_TOP)),
 //                toInt(getSystemProperty(ALIGNMENT_RIGHT)),

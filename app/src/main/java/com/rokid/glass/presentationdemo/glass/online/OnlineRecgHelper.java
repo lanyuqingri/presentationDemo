@@ -2,12 +2,16 @@ package com.rokid.glass.presentationdemo.glass.online;
 
 
 import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.HandlerThread;
 
 import com.rokid.glass.libbase.faceid.SmartRecgConfig;
 import com.rokid.glass.libbase.logger.Logger;
 import com.rokid.glass.libbase.message.car.ReqCarRecognizeMessage;
 import com.rokid.glass.libbase.message.car.ReqSyncPlateRecordMessage;
+import com.rokid.glass.libbase.message.dto.FaceInfoBean;
 import com.rokid.glass.libbase.message.face.ReqOnlineSingleFaceMessage;
+import com.rokid.glass.libbase.message.face.RespOnlineSingleFaceMessage;
 import com.rokid.glass.libbase.message.recogrecord.RecordMessage;
 import com.rokid.glass.libbase.plate.DataConvertUtil;
 import com.rokid.glass.libbase.plate.PlateInfo;
@@ -21,10 +25,15 @@ public class OnlineRecgHelper{
     private static OnlineRecgHelper instance;
     private String mOnlineType;
     private List<OnlineResp> onlineRespList;
+    private HandlerThread mHandlerThread;
+    private Handler mHandler;
 
     private OnlineRecgHelper(){
         initOnlineRecgType();
         onlineRespList = new ArrayList<>();
+        mHandlerThread = new HandlerThread(OnlineRecgHelper.class.getName());
+        mHandlerThread.start();
+        mHandler = new Handler(mHandlerThread.getLooper());
     }
     public static OnlineRecgHelper getInstance(){
         if(instance == null){
@@ -78,6 +87,26 @@ public class OnlineRecgHelper{
         } else {
             ///TODO 通过网络上传人脸在线识别信息
         }
+        Logger.d("sendFaceRecgMessage-------->trackId = " + message.getTrackId());
+        //MOCK在线数据返回
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(onlineRespList == null || onlineRespList.size() <= 0){
+                    return;
+                }
+                RespOnlineSingleFaceMessage faceMessage = new RespOnlineSingleFaceMessage();
+                faceMessage.setServerCode(RespOnlineSingleFaceMessage.ServerErrorCode.OK);
+                faceMessage.setTrackId(message.getTrackId());
+                FaceInfoBean faceInfoBean = new FaceInfoBean();
+                faceInfoBean.setAlarm(true);
+                faceInfoBean.setName("xxxx");
+                faceMessage.setFaceInfoBean(faceInfoBean);
+                for(OnlineResp resp : onlineRespList){
+                    resp.onFaceResp(faceMessage);
+                }
+            }
+        },1000);
     }
 
     public void sendRecordMessage(RecordMessage message){

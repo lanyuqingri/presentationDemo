@@ -181,10 +181,10 @@ public class SmartRecgPresenter implements OnlineResp {
     }
 
     public void handleFaceModel(final FaceModel model, final byte[] rawData){
-        if(model == null || model.getFaceList() == null || model.getFaceList().size() <= 0){
-            Logger.d("handleFaceModel-------> model is empty");
-            return;
-        }
+//        if(model == null || model.getFaceList() == null || model.getFaceList().size() <= 0){
+//            Logger.d("handleFaceModel-------> model is empty");
+//            return;
+//        }
         Logger.d("handleFaceModel-------> model is not empty");
         int len = rawData.length;
         byte[] originData = new byte[len];
@@ -721,7 +721,12 @@ public class SmartRecgPresenter implements OnlineResp {
                 if(isMultiRecg && !isSingleFaceRecg){  //多人在线 && 单人识别没开时通过此方法给MultiFaceView绘制框
                     boolean result = mMultiFaceView.addRespFaceResult(respOnlineSingleFaceMessage);
                     if(!result){
-                        mSmartRecgView.showFaceDetailInfo(respOnlineSingleFaceMessage);
+                        mSmartRecgView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mSmartRecgView.showFaceDetailInfo(respOnlineSingleFaceMessage);
+                            }
+                        });
                         if(onResultShowListener!=null) {
                             onResultShowListener.onResultShow();
                         }

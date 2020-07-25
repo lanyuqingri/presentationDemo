@@ -97,12 +97,30 @@ public class MultiFaceView extends View /*implements IBluetoothCallback */{
 
     private volatile boolean drawing = false;
 
-    public void addRespFaceResult(RespOnlineSingleFaceMessage faceMessage){
+    private boolean isTrackIdExit(int trackId){
+        if(faceModel == null || faceModel.getFaceList() == null || faceModel.getFaceList().size() <= 0){
+            return false;
+        }
+        synchronized (faceModel){
+            for (int i = 0; i < faceModel.getFaceList().size(); i++) {
+                if(faceModel.getFaceList().get(i).trackId == trackId){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public boolean addRespFaceResult(RespOnlineSingleFaceMessage faceMessage){
         Logger.d("addRespFaceResult-------->faceMessage.TrackId = " + faceMessage.getTrackId());
+        int trackId = faceMessage.getTrackId();
+        if(!isTrackIdExit(trackId)){
+            return false;
+        }
         synchronized (respFaceList){
             respFaceList.offer(faceMessage);
             postInvalidate();
         }
+        return true;
     }
 
     @Override

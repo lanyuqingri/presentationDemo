@@ -719,7 +719,14 @@ public class SmartRecgPresenter implements OnlineResp {
         switch (resp.getServerCode()){
             case OK:
                 if(isMultiRecg && !isSingleFaceRecg){  //多人在线 && 单人识别没开时通过此方法给MultiFaceView绘制框
-                    mMultiFaceView.addRespFaceResult(respOnlineSingleFaceMessage);
+                    boolean result = mMultiFaceView.addRespFaceResult(respOnlineSingleFaceMessage);
+                    if(!result){
+                        mSmartRecgView.showFaceDetailInfo(respOnlineSingleFaceMessage);
+                        if(onResultShowListener!=null) {
+                            onResultShowListener.onResultShow();
+                        }
+                        showTimer();
+                    }
                 }else {
                     if(resp.getTrackId() == mCurTrackId){
                         mHandler.removeCallbacksAndMessages(null);

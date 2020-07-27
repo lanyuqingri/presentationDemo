@@ -23,6 +23,7 @@ import com.rokid.glass.libbase.faceid.FaceIdManager;
 import com.rokid.glass.libbase.faceid.database.UserInfo;
 import com.rokid.glass.libbase.logger.Logger;
 import com.rokid.glass.libbase.message.face.RespOnlineSingleFaceMessage;
+import com.rokid.glass.libbase.music.MusicPlayHelper;
 import com.rokid.glass.libbase.utils.LimitQueue;
 import com.rokid.glass.libbase.utils.RokidSystem;
 import com.rokid.glass.presentationdemo.R;
@@ -110,6 +111,7 @@ public class MultiFaceView extends View /*implements IBluetoothCallback */{
         }
         return false;
     }
+
     public boolean addRespFaceResult(RespOnlineSingleFaceMessage faceMessage){
         Logger.d("addRespFaceResult-------->faceMessage.TrackId = " + faceMessage.getTrackId());
         int trackId = faceMessage.getTrackId();
@@ -211,6 +213,7 @@ public class MultiFaceView extends View /*implements IBluetoothCallback */{
                 paint.setColor(redColor);
                 drawRountRect(canvas, finalRect, paint);
                 drawResult(canvas, finalRect, faceMessage.getFaceInfoBean().getName(), redColor);
+                MusicPlayHelper.getInstance().playMusic("alarm.wav",false);
             } else {
                 paint.setColor(whiteColor);
                 drawRountRect(canvas, finalRect, paint);

@@ -720,7 +720,8 @@ public class SmartRecgPresenter implements OnlineResp {
             case OK:
                 if(isMultiRecg && !isSingleFaceRecg){  //多人在线 && 单人识别没开时通过此方法给MultiFaceView绘制框
                     boolean result = mMultiFaceView.addRespFaceResult(respOnlineSingleFaceMessage);
-                    if(!result){
+                    if(!result && respOnlineSingleFaceMessage != null && respOnlineSingleFaceMessage.getFaceInfoBean() != null
+                            && respOnlineSingleFaceMessage.getFaceInfoBean().isAlarm()){
                         mSmartRecgView.post(new Runnable() {
                             @Override
                             public void run() {

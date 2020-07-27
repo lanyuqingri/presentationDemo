@@ -27,6 +27,7 @@ import com.rokid.glass.libbase.logger.Logger;
 import com.rokid.glass.libbase.message.car.RespCarRecognizeMessage;
 import com.rokid.glass.libbase.message.dto.CarRecognizeInfoBean;
 import com.rokid.glass.libbase.message.face.RespOnlineSingleFaceMessage;
+import com.rokid.glass.libbase.music.MusicPlayHelper;
 import com.rokid.glass.libbase.plate.PlateDeployInfo;
 import com.rokid.glass.libbase.plate.PlateInfo;
 import com.rokid.glass.libbase.plate.PlateManager;
@@ -191,6 +192,9 @@ public class SmartRecgView extends FrameLayout{
         }
         if(bm!=null) {
             iv_head.setImageBitmap(bm);
+        }
+        if(message.getFaceInfoBean().isAlarm()){
+            MusicPlayHelper.getInstance().playMusic("alarm.wav",false);
         }
         tv_tag.setText(message.getFaceInfoBean().getTag());
         tv_place.setText(message.getFaceInfoBean().getNativeplace());

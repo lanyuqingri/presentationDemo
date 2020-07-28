@@ -16,9 +16,9 @@ import android.view.Window;
 import com.rokid.facelib.VideoRokidFace;
 import com.rokid.facelib.api.IVideoRokidFace;
 import com.rokid.facelib.api.RokidFaceCallback;
-import com.rokid.facelib.conf.DFaceConf;
-import com.rokid.facelib.conf.SFaceConf;
-import com.rokid.facelib.conf.VideoDFaceConf;
+import com.rokid.facelib.conf.DetectFaceConf;
+import com.rokid.facelib.conf.RecogFaceConf;
+import com.rokid.facelib.conf.VideoDetectFaceConf;
 import com.rokid.facelib.input.VideoInput;
 import com.rokid.facelib.model.FaceModel;
 import com.rokid.glass.libbase.BaseLibrary;
@@ -28,6 +28,7 @@ import com.rokid.glass.libbase.faceid.FaceIdManager;
 import com.rokid.glass.libbase.faceid.database.DeployDbInfo;
 import com.rokid.glass.libbase.logger.Logger;
 import com.rokid.glass.libbase.utils.DefaultSPHelper;
+import com.rokid.glass.libbase.utils.FaceUtil;
 import com.rokid.glass.libbase.utils.PlateUtils;
 import com.rokid.glass.lpr_sdk.LPRConfig;
 import com.rokid.glass.lpr_sdk.RokidLPR;
@@ -49,8 +50,8 @@ public class SmartRecogPresentation extends Presentation {
     private IVideoRokidFace videoFace;
     private static final int PREVIEW_WIDTH = CameraParams.PREVIEW_WIDTH;
     private static final int PREVIEW_HEIGHT = CameraParams.PREVIEW_HEIGHT;
-    private DFaceConf dFaceConf;
-    private SFaceConf sFaceConf;
+    private DetectFaceConf dFaceConf;
+    private RecogFaceConf sFaceConf;
     private RokidLPR rokidLPR;
     private Rect roiRect;
     private int qualityValue;
@@ -114,13 +115,12 @@ public class SmartRecogPresentation extends Presentation {
         if (!isMultiFaceRecg && !isSingleFaceRecg) {
             return;
         }
-        sFaceConf = new SFaceConf().setRecog(true, FaceIdManager.PATH_ENGINE).setOutTime(3000).setRecogInterval(5000).setTargetScore(qualityValue);
-        dFaceConf = new VideoDFaceConf().setSize(PREVIEW_WIDTH, PREVIEW_HEIGHT).setPoolNum(10).setDetectMaxFace(10);
+        dFaceConf = new VideoDetectFaceConf().setSize(PREVIEW_WIDTH, PREVIEW_HEIGHT).setPoolNum(10).setDetectMaxFace(10);
         if (!isMultiFaceRecg) {
             dFaceConf.setRoi(roiRect);
-            dFaceConf.setSingleRecogModel(true);
+//            dFaceConf.setSingleRecogModel(true);
         } else {
-            dFaceConf.setSingleRecogModel(false);
+//            dFaceConf.setSingleRecogModel(false);
             dFaceConf.setSize(PREVIEW_WIDTH, PREVIEW_HEIGHT);
         }
         videoFace = VideoRokidFace.create(getContext(), dFaceConf);
@@ -137,16 +137,20 @@ public class SmartRecogPresentation extends Presentation {
                 Logger.d("deploy package expired!");
             }
         }
-        sFaceConf = new SFaceConf().setRecog(recognize, FaceIdManager.PATH_ENGINE).setOutTime(3000).setRecogInterval(5000).setTargetScore(qualityValue);
+        sFaceConf = new RecogFaceConf().setRecog(recognize, FaceIdManager.PATH_ENGINE).setOutTime(1500).setRecogInterval(5000).setTargetScore(qualityValue);
         videoFace.sconfig(sFaceConf);
         videoFace.startTrack(new RokidFaceCallback() {
             @Override
             public void onFaceCallback(final FaceModel model) {
                 // 检测到有人脸数据则展示人脸数据
+                FaceModel faceModel = FaceUtil.copyFaceModel(model);
+                byte[] originData = videoFace.getBytes();
+                byte[] data = new byte[originData.length];
+                System.arraycopy(originData,0, data, 0 ,originData.length);
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        mSmartRecgPresenter.handleFaceModel(model, videoFace.getBytes());
+                        mSmartRecgPresenter.handleFaceModel(faceModel, data);
                     }
                 });
             }
@@ -157,11 +161,6 @@ public class SmartRecogPresentation extends Presentation {
      * 初始化车牌识别sdk
      */
     private void initPlateSDK() {
-        boolean isPlateOpen = BaseLibrary.getInstance().isPlateRecgEnable();
-        if (!isPlateOpen) {
-            return;
-        }
-
         LPRConfig lprConfig = new LPRConfig();
         lprConfig.width = PREVIEW_WIDTH;
         lprConfig.height = PREVIEW_HEIGHT;
@@ -170,27 +169,27 @@ public class SmartRecogPresentation extends Presentation {
         rokidLPR.startLPR(new RokidLPRCallback() {
             @Override
             public void onLPRCallback(LPRModel model) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        byte[] data = rokidLPR.getBytes();
-                        if (model.lps == null || model.lps.size() == 0) {
+                byte[] data = rokidLPR.getBytes();
+                if (model.lps == null || model.lps.size() == 0) {
 //                            Logger.d("onLPRCallback------> no lpr recog~~~~~~~~~~~~~~~~~~");
-                            return;
-                        }
-                        for (LPRDO lprdo : model.lps) {
-                            Logger.d("onLPRCallback------> lprdo.score: " + lprdo.score);
-                            Logger.d("onLPRCallback------> lprdo.licensePlate: " + lprdo.licensePlate);
-                            if (lprdo.score > 0.97 && PlateUtils.isCarNo(lprdo.licensePlate)) {
-                                String name = lprdo.licensePlate;
-                                Bitmap bm = BitmapUtils.nv21ToBitmap(data, PREVIEW_WIDTH, PREVIEW_HEIGHT, lprdo.toRect(PREVIEW_WIDTH, PREVIEW_HEIGHT));
-                                Logger.i("PlateSDK ------>onLPRCallback  && rect:" + lprdo.toRect(PREVIEW_WIDTH, PREVIEW_HEIGHT));
+                    return;
+                }
+                for (LPRDO lprdo : model.lps) {
+                    Logger.d("onLPRCallback------> lprdo.score: " + lprdo.score);
+                    Logger.d("onLPRCallback------> lprdo.licensePlate: " + lprdo.licensePlate);
+                    if (lprdo.score > 0.97 && PlateUtils.isCarNo(lprdo.licensePlate)) {
+                        String name = lprdo.licensePlate;
+                        Bitmap bm = BitmapUtils.nv21ToBitmap(data, PREVIEW_WIDTH, PREVIEW_HEIGHT, lprdo.toRect(PREVIEW_WIDTH, PREVIEW_HEIGHT));
+                        Logger.i("PlateSDK ------>onLPRCallback  && rect:" + lprdo.toRect(PREVIEW_WIDTH, PREVIEW_HEIGHT));
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
                                 mSmartRecgPresenter.handlePlate(name, bm);
-                                break;
                             }
-                        }
+                        });
+                        break;
                     }
-                });
+                }
             }
         });
     }
@@ -210,13 +209,9 @@ public class SmartRecogPresentation extends Presentation {
         if(videoFace!=null){
             videoFace.destroy();
         }
-        if(rokidLPR != null){
-            rokidLPR.destory();
-        }
         stopCameraPreview();
         reset();
         initAllView();
-        initPlateSDK();
         initFaceSDK();
         restartCameraPreview();
     }

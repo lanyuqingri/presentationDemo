@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.View;
@@ -33,13 +34,16 @@ import com.rokid.glass.libbase.utils.DefaultSPHelper;
 import com.rokid.glass.libbase.utils.RokidSystem;
 import com.rokid.glass.libbase.utils.ThreadPoolHelper;
 import com.rokid.glass.libbase.utils.UUIDUtils;
+import com.rokid.glass.viewcomponent.glass.bean.FaceDOWithRawData;
 import com.rokid.glass.viewcomponent.glass.online.OnlineRecgHelper;
 import com.rokid.glass.viewcomponent.glass.online.OnlineResp;
 import com.rokid.glass.viewcomponent.glass.view.MultiFaceView;
 import com.rokid.glass.viewcomponent.glass.view.SmartRecgView;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -67,6 +71,8 @@ public class SmartRecgPresenter implements OnlineResp {
     private boolean isOnlineDebug = false;
     private File debugDir = new File("/sdcard/test/");
     private Rect mRoiRect;
+    private Handler mUploadHandler;
+    private HandlerThread mUploadThread;
 
     public SmartRecgPresenter(){
         mOnlineRecgHelper = OnlineRecgHelper.getInstance();
@@ -78,6 +84,9 @@ public class SmartRecgPresenter implements OnlineResp {
 
     // 绑定智能识别view以及 handler
     public void bindView(SmartRecgView view, MultiFaceView multiFaceView,Handler handler){
+        mUploadThread = new HandlerThread("upload_thread");
+        mUploadThread.start();
+        mUploadHandler = new Handler(mUploadThread.getLooper());
         mSmartRecgView = view;
         mMultiFaceView = multiFaceView;
         mHandler = handler;
@@ -92,63 +101,171 @@ public class SmartRecgPresenter implements OnlineResp {
         mMultiFaceView = null;
         mHandler.removeCallbacksAndMessages(null);
         mOnlineRecgHelper.removeOnlineResp(this);
+        if(mUploadHandler != null){
+            mUploadHandler.removeCallbacksAndMessages(null);
+        }
+        if(mUploadThread != null){
+            mUploadThread.quitSafely();
+        }
+    }
+
+    /**
+     * mTrackFaces记录已经上传的trackId以及对应的人脸分数
+     * 上传的策略：如果说对应trackId已经上传，当前的人脸分与上传过的人脸分进行对比，得分高则继续上传，否则忽略
+     * 如果对应trackId并未上传过，则直接上传 并保存上传人脸的trackId以及人脸得分
+     *
+     * @param model
+     * @param rawData
+     */
+    private Map<Integer, FaceDOWithRawData> mTraceFaceMap = new HashMap<>();
+    private Bitmap getClipFace(FaceDO targetFace, byte[] rawData) {
+
+        final Rect faceRect = targetFace.toRect(PREVIEW_WIDTH, PREVIEW_HEIGHT);
+        final Rect finalRect = FaceRectUtils.scaleRect(faceRect, PREVIEW_WIDTH, PREVIEW_HEIGHT, 1.6f);
+        Logger.i("finalRect:" + finalRect);
+        return BitmapUtils.nv21ToBitmap(rawData, PREVIEW_WIDTH, PREVIEW_HEIGHT, finalRect);
+    }
+
+    public void uploadFaceModel(final FaceModel model, final byte[] rawData) {
+        if (null == model) return;
+
+        final List<FaceDO> faceDOs = model.getFaceList();
+        if (null == faceDOs || faceDOs.size() == 0) return;
+
+
+        for (FaceDO faceDO : faceDOs) {
+            if (faceDO.quality < 42) continue;
+
+            FaceDOWithRawData faceDORaw = mTraceFaceMap.get(faceDO.trackId);
+            FaceDO cacheFace = faceDORaw == null ? null : faceDORaw.getFaceDO();
+            byte[] bytes = new byte[rawData.length];
+            System.arraycopy(rawData, 0, bytes, 0, rawData.length);
+            if (null == cacheFace) {
+                synchronized (mTraceFaceMap) {
+                    mTraceFaceMap.put(faceDO.trackId, new FaceDOWithRawData(faceDO, bytes));
+                }
+                mUploadHandler.postDelayed(() -> {
+                    FaceDOWithRawData faceDOWithRawData = null;
+                    synchronized (mTraceFaceMap) {
+                        faceDOWithRawData = mTraceFaceMap.get(faceDO.trackId);
+                        if (null == faceDOWithRawData) return;
+                        mTraceFaceMap.remove(faceDO.trackId);
+                    }
+                    uploadFace(faceDOWithRawData);
+                }, 1000);
+            } else {
+                if (cacheFace.quality > faceDO.quality) {
+                    continue;
+                }
+                synchronized (mTraceFaceMap) {
+                    mTraceFaceMap.put(faceDO.trackId, new FaceDOWithRawData(faceDO, bytes));
+                }
+            }
+        }
+    }
+
+    private void uploadFace(FaceDOWithRawData faceDOWithRawData){
+        FaceDO faceDO = faceDOWithRawData.getFaceDO();
+        final byte[] rawData = faceDOWithRawData.getRawData();
+        Bitmap recogBitmap = getClipFace(faceDO, rawData);
+        byte[] bytes = BitmapUtils.bitmap2bytes(recogBitmap);
+        ReqOnlineSingleFaceMessage onlineSingleFaceMessage = new ReqOnlineSingleFaceMessage(faceDO.trackId, bytes);
+        onlineSingleFaceMessage.setWidth(recogBitmap.getWidth());
+        onlineSingleFaceMessage.setHeight(recogBitmap.getHeight());
+        OnlineRecgHelper.getInstance().sendFaceRecgMessage(onlineSingleFaceMessage);
+    }
+
+    public void handleFaceModel(final FaceModel model, final byte[] rawData){
+//        if(model == null || model.getFaceList() == null || model.getFaceList().size() <= 0){
+//            Logger.d("handleFaceModel-------> model is empty");
+//            return;
+//        }
+        Logger.d("handleFaceModel-------> model is not empty");
+        boolean isMultiFaceRecg = BaseLibrary.getInstance().isMultiFaceRecgEnable();
+        boolean isSingleFaceRecg = BaseLibrary.getInstance().isSingleFaceRecgEnable();
+        if(isMultiFaceRecg && mMultiFaceView != null){
+            mMultiFaceView.setFaceModel(model);
+            if(!isSingleFaceRecg){
+                uploadFaceModel(model,rawData);
+            }
+        }
+
+        boolean isOnlineSingleRecg = BaseLibrary.getInstance().isOnlineSingleFaceRecgEnable();
+        if(isSingleFaceRecg){
+            final FaceDO maxFaceDO = getTargetFace(model);
+            if(isOnlineSingleRecg){
+                ThreadPoolHelper.getInstance().threadExecute(new Runnable() {
+                    @Override
+                    public void run() {
+                        handleSingleFaceNetWork(rawData, maxFaceDO);
+                    }
+                });
+            }else {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        handleSingleFaceLocal(maxFaceDO,rawData);
+                    }
+                });
+            }
+        }
     }
 
     //同步人脸识别结果数据
-    public void handleFaceModel(final FaceModel model, final byte[] rawData){
-//        Logger.d("handleFaceModel------>is called && ThreadId: " + Thread.currentThread().getId());
-        boolean isMultiFaceRecg = BaseLibrary.getInstance().isMultiFaceRecgEnable();
-        if(mSmartRecgView.isSingleFaceInfoShowing() || mSmartRecgView.isCarShowing()){
-            if(isMultiFaceRecg){
-                mMultiFaceView.setFaceModel(model);
-            }
-            return;
-        }
-        boolean isSingleFaceRecg = BaseLibrary.getInstance().isSingleFaceRecgEnable();
-        boolean isOnlineSingleRecg = BaseLibrary.getInstance().isOnlineSingleFaceRecgEnable();
-        if(isSingleFaceRecg){
-            if(isOnineRecging.get() || mSmartRecgView.isCarShowing()){
-                //如果正在进行在线识别或者有车牌信息在展示，则本次单人人脸信息暂时不做处理
-                Logger.d("handleFaceModel---------->isOnineRecging: " + isOnineRecging.get());
-                return;
-            }
-            FaceModel rectFaceModel = getFaceInSingleRect(model);
-            if(rectFaceModel == null || rectFaceModel.getFaceList() == null || rectFaceModel.getFaceList().size() <= 0){
-                //无单人识别数据,如果多人识别未打开，同时车牌识别也没信息需要展示，则继续识别，此无人脸信息就不再展示了
-                if(!isMultiFaceRecg && !isOnineRecging.get() && !mSmartRecgView.isCarShowing()){
-                    mSmartRecgView.showNormalRect();
-                }
-            } else {
-                FaceDO maxSingleFaceDO = rectFaceModel.getMaxFace();
-                if(maxSingleFaceDO == null){
-                    return;
-                }
-                if(isMultiFaceRecg && !isFaceLargeEnough(getFaceDoRect(maxSingleFaceDO))){
-                    //开着多人，但是单人最大的框没超过roi的三十二分之一，则忽略此单人核查信息，只进行多人的展示
-                    Logger.d("handleFaceModel--------> multi face recognition && single face is too small");
-                } else {
-                    //需要对单人进行核查
-                    if(isOnlineSingleRecg){
-                        //单人在线
-                        isOnineRecging.set(true);
-                        final FaceDO maxFaceDO = getTargetFace(rectFaceModel);
-                        ThreadPoolHelper.getInstance().threadExecute(new Runnable() {
-                            @Override
-                            public void run() {
-                                handleSingleFaceNetWork(rawData, maxFaceDO);
-                            }
-                        });
-                    } else {
-                        //单人离线
-                        handleSingleFaceLocal(maxSingleFaceDO,rawData);
-                    }
-                }
-            }
-        }
-        if(isMultiFaceRecg){
-            mMultiFaceView.setFaceModel(model);
-        }
-    }
+//    public void handleFaceModel(final FaceModel model, final byte[] rawData){
+////        Logger.d("handleFaceModel------>is called && ThreadId: " + Thread.currentThread().getId());
+//        boolean isMultiFaceRecg = BaseLibrary.getInstance().isMultiFaceRecgEnable();
+//        if(mSmartRecgView.isSingleFaceInfoShowing() || mSmartRecgView.isCarShowing()){
+//            if(isMultiFaceRecg){
+//                mMultiFaceView.setFaceModel(model);
+//            }
+//            return;
+//        }
+//        boolean isSingleFaceRecg = BaseLibrary.getInstance().isSingleFaceRecgEnable();
+//        boolean isOnlineSingleRecg = BaseLibrary.getInstance().isOnlineSingleFaceRecgEnable();
+//        if(isSingleFaceRecg){
+//            if(isOnineRecging.get() || mSmartRecgView.isCarShowing()){
+//                //如果正在进行在线识别或者有车牌信息在展示，则本次单人人脸信息暂时不做处理
+//                Logger.d("handleFaceModel---------->isOnineRecging: " + isOnineRecging.get());
+//                return;
+//            }
+//            FaceModel rectFaceModel = getFaceInSingleRect(model);
+//            if(rectFaceModel == null || rectFaceModel.getFaceList() == null || rectFaceModel.getFaceList().size() <= 0){
+//                //无单人识别数据,如果多人识别未打开，同时车牌识别也没信息需要展示，则继续识别，此无人脸信息就不再展示了
+//                if(!isMultiFaceRecg && !isOnineRecging.get() && !mSmartRecgView.isCarShowing()){
+//                    mSmartRecgView.showNormalRect();
+//                }
+//            } else {
+//                FaceDO maxSingleFaceDO = rectFaceModel.getMaxFace();
+//                if(maxSingleFaceDO == null){
+//                    return;
+//                }
+//                if(isMultiFaceRecg && !isFaceLargeEnough(getFaceDoRect(maxSingleFaceDO))){
+//                    //开着多人，但是单人最大的框没超过roi的三十二分之一，则忽略此单人核查信息，只进行多人的展示
+//                    Logger.d("handleFaceModel--------> multi face recognition && single face is too small");
+//                } else {
+//                    //需要对单人进行核查
+//                    if(isOnlineSingleRecg){
+//                        //单人在线
+//                        isOnineRecging.set(true);
+//                        final FaceDO maxFaceDO = getTargetFace(rectFaceModel);
+//                        ThreadPoolHelper.getInstance().threadExecute(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                handleSingleFaceNetWork(rawData, maxFaceDO);
+//                            }
+//                        });
+//                    } else {
+//                        //单人离线
+//                        handleSingleFaceLocal(maxSingleFaceDO,rawData);
+//                    }
+//                }
+//            }
+//        }
+//        if(isMultiFaceRecg){
+//            mMultiFaceView.setFaceModel(model);
+//        }
+//    }
 
     private void handleSingleFaceLocal(final FaceDO targetFace, final byte[] rawData){
         Logger.d("handleSingleFaceLocal-------->  is called");
@@ -167,11 +284,8 @@ public class SmartRecgPresenter implements OnlineResp {
                 ThreadPoolHelper.getInstance().threadExecute(new Runnable() {
                     @Override
                     public void run() {
-                        Rect faceRect = targetFace.toRect(PREVIEW_WIDTH,PREVIEW_HEIGHT);
-                        Rect finalRect = FaceRectUtils.scaleRect(faceRect,PREVIEW_WIDTH,PREVIEW_HEIGHT,1.6f);
-                        Bitmap bm = BitmapUtils.nv21ToBitmap(rawData,PREVIEW_WIDTH,PREVIEW_HEIGHT,finalRect);
-                        Utils.saveFaceOfflineInfo(bm, info, targetFace);
-                        RecordMessage recordMessage = Utils.ConvertUserInfo2RecordMessage(info,bm,bm,true);
+                        Utils.saveFaceOfflineInfo(targetFace.recogBitmap, info, targetFace);
+                        RecordMessage recordMessage = Utils.ConvertUserInfo2RecordMessage(info,targetFace.recogBitmap,targetFace.recogBitmap,true);
                         OnlineRecgHelper.getInstance().sendRecordMessage(recordMessage);
                     }
                 });
@@ -213,7 +327,7 @@ public class SmartRecgPresenter implements OnlineResp {
         targetFace.trackInterval = SystemClock.elapsedRealtime() - mCurFaceFirstTime;
         Logger.i("handleSingleNetWork------>targetFace.trackInterval: " + targetFace.trackInterval);
         Logger.i("handleSingleNetWork------>targetFace.faceScore:"+targetFace.faceScore);
-        if(targetFace.goodQuality && targetFace.faceScore>0.75) {
+        if(targetFace.quality >= 45) {
             Logger.i("-----goodQuality-------");
             Rect faceRect = targetFace.toRect(PREVIEW_WIDTH,PREVIEW_HEIGHT);
             Rect finalRect = FaceRectUtils.scaleRect(faceRect,PREVIEW_WIDTH,PREVIEW_HEIGHT,1.6f);
@@ -222,15 +336,15 @@ public class SmartRecgPresenter implements OnlineResp {
             mRecgCaptureBitmap = BitmapUtils.nv21ToBitmap(rawdata,PREVIEW_WIDTH,PREVIEW_HEIGHT);
             doNetWork(bm);
         }else{
-            if(targetFace.sharpness > mCurrentSharpness && targetFace.faceScore > 0.75){
+            if(targetFace.quality > mCurrentSharpness && targetFace.quality >= 42){
                 Rect faceRect = targetFace.toRect(PREVIEW_WIDTH,PREVIEW_HEIGHT);
                 Rect finalRect = FaceRectUtils.scaleRect(faceRect,PREVIEW_WIDTH,PREVIEW_HEIGHT,1.6f);
                 Logger.i("finalRect:"+finalRect);
                 mBestBitmap = BitmapUtils.nv21ToBitmap(rawdata,PREVIEW_WIDTH,PREVIEW_HEIGHT,finalRect);
-                mCurrentSharpness = targetFace.sharpness;
+                mCurrentSharpness = targetFace.quality;
             }
             Logger.i("targetFace.trackInterval:" + targetFace.trackInterval);
-            if(targetFace.trackInterval > 2000) {
+            if(targetFace.trackInterval > 1000) {
                 Logger.i("-----timeOut-------");
                 mRecgCaptureBitmap = BitmapUtils.nv21ToBitmap(rawdata,PREVIEW_WIDTH,PREVIEW_HEIGHT);
                 doNetWork(mBestBitmap);
@@ -291,7 +405,7 @@ public class SmartRecgPresenter implements OnlineResp {
             //在线车牌识别
             if(isOnineRecging.get()){
                 //如果正在在线识别中，则不再进行车牌的识别
-                return;
+                //return;
             }
             isOnineRecging.set(true);
             ThreadPoolHelper.getInstance().threadExecute(new Runnable() {
@@ -583,25 +697,38 @@ public class SmartRecgPresenter implements OnlineResp {
     public void onFaceResp(RespOnlineSingleFaceMessage respOnlineSingleFaceMessage) {
         RespOnlineSingleFaceMessage resp = respOnlineSingleFaceMessage;
         Logger.d("onFaceResp------------------------>is called && serverCode: " + resp.getServerCode());
+        boolean isMultiRecg = BaseLibrary.getInstance().isMultiFaceRecgEnable();
+        boolean isSingleFaceRecg = BaseLibrary.getInstance().isSingleFaceRecgEnable();
         switch (resp.getServerCode()){
             case OK:
-                if(resp.getTrackId() == mCurTrackId){
-                    mHandler.removeCallbacksAndMessages(null);
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mSmartRecgView.showFaceDetailInfo(respOnlineSingleFaceMessage);
-                            if(onResultShowListener!=null) {
-                                onResultShowListener.onResultShow();
+                if(isMultiRecg && !isSingleFaceRecg){  //多人在线 && 单人识别没开时通过此方法给MultiFaceView绘制框
+                    boolean result = mMultiFaceView.addRespFaceResult(respOnlineSingleFaceMessage);
+                    if(!result && respOnlineSingleFaceMessage != null && respOnlineSingleFaceMessage.getFaceInfoBean() != null
+                            && respOnlineSingleFaceMessage.getFaceInfoBean().isAlarm()){
+                        mSmartRecgView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mSmartRecgView.showFaceDetailInfo(respOnlineSingleFaceMessage);
                             }
+                        });
+                        if(onResultShowListener!=null) {
+                            onResultShowListener.onResultShow();
                         }
-                    });
-                    showTimer();
-//                    Utils.saveRespOnlineSingleFaceMessage(resp,mFaceRecordBitmap,mRecgCaptureBitmap);
+                        showTimer();
+                    }
+                }else {
+                    if(resp.getTrackId() == mCurTrackId){
+                        mHandler.removeCallbacksAndMessages(null);
+                        mSmartRecgView.showFaceDetailInfo(respOnlineSingleFaceMessage);
+                        if(onResultShowListener!=null) {
+                            onResultShowListener.onResultShow();
+                        }
+                        showTimer();
+                        Utils.saveRespOnlineSingleFaceMessage(resp,mFaceRecordBitmap,mRecgCaptureBitmap);
+                    }
                 }
                 break;
             default:
-                boolean isMultiRecg = BaseLibrary.getInstance().isMultiFaceRecgEnable();
                 if(!isMultiRecg){
                     mHandler.removeCallbacksAndMessages(null);
                     mHandler.post(new Runnable() {

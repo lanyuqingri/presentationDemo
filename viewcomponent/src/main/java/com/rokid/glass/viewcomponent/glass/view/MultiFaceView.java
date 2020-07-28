@@ -22,9 +22,12 @@ import com.rokid.glass.libbase.faceid.FaceConstants;
 import com.rokid.glass.libbase.faceid.FaceIdManager;
 import com.rokid.glass.libbase.faceid.database.UserInfo;
 import com.rokid.glass.libbase.logger.Logger;
+import com.rokid.glass.libbase.message.face.RespOnlineSingleFaceMessage;
+import com.rokid.glass.libbase.music.MusicPlayHelper;
 import com.rokid.glass.libbase.utils.RokidSystem;
 import com.rokid.glass.viewcomponent.R;
 import com.rokid.glass.viewcomponent.glass.CameraParams;
+import com.rokid.glass.viewcomponent.glass.LimitQueue;
 import com.rokid.glass.viewcomponent.glass.Utils;
 import com.rokid.glass.viewcomponent.glass.animation.BreatheAnimate;
 import com.rokid.glass.viewcomponent.glass.bean.FaceBean;
@@ -58,6 +61,7 @@ public class MultiFaceView extends View /*implements IBluetoothCallback */{
     private static final String TAG = "MultiFaceView";
     private BreatheAnimate breatheAnimate;
     private SparseArray curFaceBean;
+    private LimitQueue<RespOnlineSingleFaceMessage> respFaceList;
 
     public MultiFaceView(Context context) {
         this(context, null);
@@ -88,6 +92,7 @@ public class MultiFaceView extends View /*implements IBluetoothCallback */{
 
         breatheAnimate = new BreatheAnimate(1000,0.8f,1.2f);
         curFaceBean = new SparseArray();
+        respFaceList = new LimitQueue<>(10);
     }
     private volatile boolean drawing = false;
     @Override
@@ -119,6 +124,31 @@ public class MultiFaceView extends View /*implements IBluetoothCallback */{
         data = new WeakReference<>(rawData);
     }
 
+    private boolean isTrackIdExit(int trackId){
+        if(faceModel == null || faceModel.getFaceList() == null || faceModel.getFaceList().size() <= 0){
+            return false;
+        }
+        synchronized (faceModel){
+            for (int i = 0; i < faceModel.getFaceList().size(); i++) {
+                if(faceModel.getFaceList().get(i).trackId == trackId){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public boolean addRespFaceResult(RespOnlineSingleFaceMessage faceMessage){
+        Logger.d("addRespFaceResult-------->faceMessage.TrackId = " + faceMessage.getTrackId());
+        int trackId = faceMessage.getTrackId();
+        if(!isTrackIdExit(trackId)){
+            return false;
+        }
+        synchronized (respFaceList){
+            respFaceList.offer(faceMessage);
+            postInvalidate();
+        }
+        return true;
+    }
 
     private void drawNormalFace(Canvas canvas, FaceDO faceNumberDo) {
 //        Logger.i("drawNormalFace","faceNumberDo:"+faceNumberDo.faceRectF);
@@ -181,14 +211,43 @@ public class MultiFaceView extends View /*implements IBluetoothCallback */{
                 // 用户信息不为空，则开始绘制
                 drawResult(canvas, finalRect, faceBean.name, redColor);
                 if(faceBean.isAlarm){
-//                    MusicPlayHelper.getInstance().playMusic("alarm.wav",false);
+                    MusicPlayHelper.getInstance().playMusic("alarm.wav",false);
                 }
             }
         }
         else {
-            paint.setColor(whiteColor);
-            drawRountRect(canvas, finalRect, paint);
+            RespOnlineSingleFaceMessage faceMessage = findFaceMsgByTrackId(faceNumberDo.trackId);
+            if(faceMessage != null && faceMessage.getFaceInfoBean() != null && faceMessage.getFaceInfoBean().isAlarm()){
+                paint.setColor(redColor);
+                drawRountRect(canvas, finalRect, paint);
+                drawResult(canvas, finalRect, faceMessage.getFaceInfoBean().getName(), redColor);
+                MusicPlayHelper.getInstance().playMusic("alarm.wav",false);
+            } else {
+                paint.setColor(whiteColor);
+                drawRountRect(canvas, finalRect, paint);
+            }
         }
+    }
+
+    private RespOnlineSingleFaceMessage findFaceMsgByTrackId(int trackId){
+        if(respFaceList == null){
+            Logger.d("findFaceMsgByTrackId-------->TrackId = " + trackId);
+            return null;
+        }
+        synchronized (respFaceList){
+            if(respFaceList.size() > 0){
+                for(int i = 0; i < respFaceList.size(); i++){
+                    RespOnlineSingleFaceMessage faceMessage = respFaceList.get(i);
+                    if(faceMessage.getTrackId() == trackId){
+                        Logger.d("findFaceMsgByTrackId-------->trackId: " + trackId + "  has find" );
+                        return faceMessage;
+                    }
+                }
+            } else {
+                Logger.d("findFaceMsgByTrackId-------->respFaceList is null " );
+            }
+        }
+        return null;
     }
 
     public void clearCache(){

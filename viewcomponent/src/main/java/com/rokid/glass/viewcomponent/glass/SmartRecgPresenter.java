@@ -719,12 +719,17 @@ public class SmartRecgPresenter implements OnlineResp {
                 }else {
                     if(resp.getTrackId() == mCurTrackId){
                         mHandler.removeCallbacksAndMessages(null);
-                        mSmartRecgView.showFaceDetailInfo(respOnlineSingleFaceMessage);
+                        mSmartRecgView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mSmartRecgView.showFaceDetailInfo(respOnlineSingleFaceMessage);
+                            }
+                        });
                         if(onResultShowListener!=null) {
                             onResultShowListener.onResultShow();
                         }
                         showTimer();
-                        Utils.saveRespOnlineSingleFaceMessage(resp,mFaceRecordBitmap,mRecgCaptureBitmap);
+//                        Utils.saveRespOnlineSingleFaceMessage(resp,mFaceRecordBitmap,mRecgCaptureBitmap);
                     }
                 }
                 break;

@@ -52,7 +52,7 @@ public class SmartRecgView extends FrameLayout{
     public TextView tv_retry;
     private ImageView iv_crop,iv_scan;
 
-    private TextView tv_plate;
+    private TextView tv_plate,tv_plate_tag;
     private ConstraintLayout cl_plate;
     private ImageView iv_plate_bg;
     private ImageView iv_pass;
@@ -97,6 +97,7 @@ public class SmartRecgView extends FrameLayout{
         tv_retry = findViewById(R.id.tv_retry);
 
         tv_plate = findViewById(R.id.tv_plate);
+        tv_plate_tag = findViewById(R.id.tv_plate_tag);
         cl_plate = findViewById(R.id.cl_plate);
         cl_plate.setLayoutAnimation(controller);
         tv_tag = findViewById(R.id.tv_tag);
@@ -371,13 +372,14 @@ public class SmartRecgView extends FrameLayout{
         Logger.i("showCarDetailInfo----->is called && RespCarRecognizeMessage: " + plateInfo.toString());
         mCarInfoShowing = true;
         iv_roi_rect.setVisibility(GONE);
+        cl_new_friend.setVisibility(GONE);
         iv_cross_rect.setVisibility(GONE);
         tv_recog.setVisibility(GONE);
         cl_plate.setVisibility(VISIBLE);
         tv_plate.setVisibility(VISIBLE);
         tv_plate.setText(plateInfo.getPlate());
-        tv_tag.setVisibility(VISIBLE);
-        tv_tag.setText(plateInfo.getTag());
+        tv_plate_tag.setVisibility(VISIBLE);
+        tv_plate_tag.setText(plateInfo.getTag());
         tv_num.setVisibility(VISIBLE);
         tv_num.setText(plateInfo.getBrand()+" "+ plateInfo.getColor());
         tv_addr.setVisibility(VISIBLE);
@@ -392,14 +394,15 @@ public class SmartRecgView extends FrameLayout{
         }
         Logger.i("showCarDetailInfo----->is called && RespCarRecognizeMessage: " + message.toString());
         mCarInfoShowing = true;
+        cl_new_friend.setVisibility(GONE);
         iv_roi_rect.setVisibility(GONE);
         iv_cross_rect.setVisibility(GONE);
         tv_recog.setVisibility(GONE);
         cl_plate.setVisibility(VISIBLE);
         tv_plate.setVisibility(VISIBLE);
         tv_plate.setText(message.getCarRecognizeInfoBean().getPlate());
-        tv_tag.setVisibility(VISIBLE);
-        tv_tag.setText(message.getCarRecognizeInfoBean().getTag());
+        tv_plate_tag.setVisibility(VISIBLE);
+        tv_plate_tag.setText(message.getCarRecognizeInfoBean().getTag());
         tv_num.setVisibility(VISIBLE);
         tv_num.setText(message.getCarRecognizeInfoBean().getBrand()+" "+ message.getCarRecognizeInfoBean().getColor());
         tv_addr.setVisibility(VISIBLE);
@@ -416,14 +419,15 @@ public class SmartRecgView extends FrameLayout{
         Logger.i("showCarDetailInfo----->is called && CarRecognizeInfoBean: " + message.toString());
         mCarInfoShowing = true;
         hideSingleFaceView();
+        cl_new_friend.setVisibility(GONE);
         iv_roi_rect.setVisibility(GONE);
         iv_cross_rect.setVisibility(GONE);
         tv_recog.setVisibility(GONE);
         cl_plate.setVisibility(VISIBLE);
         tv_plate.setVisibility(VISIBLE);
         tv_plate.setText(message.getPlate());
-        tv_tag.setVisibility(VISIBLE);
-        tv_tag.setText(message.getTag());
+        tv_plate_tag.setVisibility(VISIBLE);
+        tv_plate_tag.setText(message.getTag());
         tv_num.setVisibility(VISIBLE);
         tv_num.setText(message.getBrand()+" "+ message.getColor());
         tv_addr.setVisibility(VISIBLE);

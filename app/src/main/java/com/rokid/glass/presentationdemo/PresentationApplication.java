@@ -7,14 +7,15 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import androidx.multidex.MultiDex;
 
-//import com.rokid.glass.alliance.RokidSDK;
+import com.rokid.glass.alliance.RokidSDK;
+import com.rokid.glass.libbase.logger.Logger;
 
 
 public class PresentationApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-//        RokidSDK.getInstance().initApp(this);
+        RokidSDK.getInstance().initApp(this);
         fixDisplay();
     }
 
@@ -67,7 +68,8 @@ public class PresentationApplication extends Application {
         final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         final float targetDensity = displayMetrics.widthPixels / 360;
         final int targetDensityDpi = (int) (160 * targetDensity);
-
+        Logger.d("realFix------>targetDensity = " + targetDensity);
+        Logger.d("realFix------>targetDensityDpi = " + targetDensityDpi);
         displayMetrics.density = displayMetrics.scaledDensity = targetDensity;
         displayMetrics.densityDpi = targetDensityDpi;
 

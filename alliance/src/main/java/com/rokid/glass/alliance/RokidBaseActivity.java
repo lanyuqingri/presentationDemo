@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.hardware.display.DisplayManager;
 import android.hardware.usb.UsbDevice;
 import android.os.Build;
@@ -123,11 +124,19 @@ public abstract class RokidBaseActivity extends Activity implements CameraDialog
         if(presentationDisplays != null && presentationDisplays.length > 0){
             Display defaultDisplay = presentationDisplays[0];
             if(defaultDisplay.getDisplayId() == curDisplayId ){
+                Point point = new Point();
+                defaultDisplay.getSize(point);
+                Logger.d("showPresentation----->screen width = " + point.x);
+                Logger.d("showPresentation----->screen height = " + point.y);
                 if(mPresentation == null){
                     mPresentation = new SmartRecogPresentation(this,defaultDisplay);
                 }
                 mPresentation.show();
             } else {
+                Point point = new Point();
+                defaultDisplay.getSize(point);
+                Logger.d("showPresentation----->screen width = " + point.x);
+                Logger.d("showPresentation----->screen height = " + point.y);
                 if(mPresentation != null && mPresentation.isShowing()){
                     mPresentation.dismiss();
                 }

@@ -269,6 +269,15 @@ public class MainActivity extends AppCompatActivity implements CameraDialog.Came
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mCameraHelper.unregisterUSB();
+        mCameraHelper.release();
+        mCameraHelper = null;
+        finish();
+    }
+
+    @Override
     public void onSurfaceChanged(CameraViewInterface view, Surface surface, int width, int height) {
         Logger.d("onSurfaceChanged---->is called : width = " + width + " && height = " + height);
     }

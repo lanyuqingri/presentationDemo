@@ -16,6 +16,10 @@ android {
                 arguments = [ AROUTER_MODULE_NAME : project.getName() ]
             }
         }
+        ndk {
+//            abiFilters "armeabi-v7a"
+            abiFilters "armeabi-v7a","arm64-v8a"
+        }
     }
 
     buildTypes {
@@ -51,11 +55,11 @@ dependencies {
 
 
     api 'com.google.code.gson:gson:2.8.1'
-    api ('com.rokid.glass:facelib:4.12.3.2'){
+    api ('com.rokid.glass:facelib:4.14.3.2-CPU'){
         exclude group: 'com.android.support'
         exclude group: 'android.arch.persistence.room'
     }
-    api ('com.rokid.glass:lpr:3.2.1.1'){
+    api ('com.rokid.glass:lpr:3.4.1.1-cpu'){
         exclude group: 'com.android.support'
     }
     api ('com.rokid.glass:ui:1.3.7'){

@@ -18,6 +18,7 @@ import android.hardware.usb.UsbDevice;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.Display;
 import android.view.Surface;
 import android.view.View;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jiangdg.usbcamera.UVCCameraHelper;
+import com.jiangdg.usbcamera.utils.FileUtils;
 import com.rokid.glass.libbase.config.DeployTaskConfig;
 import com.rokid.glass.libbase.faceid.FaceConstants;
 import com.rokid.glass.libbase.logger.Logger;
@@ -35,6 +37,7 @@ import com.rokid.glass.presentationdemo.glass.SmartRecogPresentation;
 import com.serenegiant.usb.CameraDialog;
 import com.serenegiant.usb.USBMonitor;
 import com.serenegiant.usb.common.AbstractUVCCameraHandler;
+import com.serenegiant.usb.encoder.RecordParams;
 import com.serenegiant.usb.widget.CameraViewInterface;
 
 import java.util.ArrayList;
@@ -111,12 +114,14 @@ public class MainActivity extends AppCompatActivity implements CameraDialog.Came
                 isPreview = true;
                 showShortMsg("connecting");
             }
+            startMediaRecord(UVCCameraHelper.ROOT_PATH +"/videos/" + System.currentTimeMillis());
         }
 
         @Override
         public void onDisConnectDev(UsbDevice device) {
             Logger.i("USBCamera onDisConnectDev -------->is called: " + device.getDeviceName());
             showShortMsg("disconnecting");
+            stopMediaRecord();
         }
     };
 
@@ -345,7 +350,43 @@ public class MainActivity extends AppCompatActivity implements CameraDialog.Came
                 mFaceImageView.setImageBitmap(bm);
             }
         });
+    }
 
+    private void stopMediaRecord(){
+        FileUtils.releaseFile();
+        mCameraHelper.stopPusher();
+    }
 
+    private void startMediaRecord(String path){
+//        String videoPath = UVCCameraHelper.ROOT_PATH +"/videos/" + System.currentTimeMillis()
+//                + UVCCameraHelper.SUFFIX_MP4;
+
+        String videoPath = path;
+        RecordParams params = new RecordParams();
+        params.setRecordPath(videoPath);
+        params.setRecordDuration(0);                        // auto divide saved,default 0 means not divided
+        params.setVoiceClose(false);    // is close voice
+
+        params.setSupportOverlay(true); // overlay only support armeabi-v7a & arm64-v8a
+        mCameraHelper.startPusher(params, new AbstractUVCCameraHandler.OnEncodeResultListener() {
+            @Override
+            public void onEncodeResult(byte[] data, int offset, int length, long timestamp, int type) {
+                // type = 1,h264 video stream
+                if (type == 1) {
+                    FileUtils.putFileStream(data, offset, length);
+                }
+                // type = 0,aac audio stream
+                if(type == 0) {
+
+                }
+            }
+
+            @Override
+            public void onRecordResult(String videoPath) {
+                if(TextUtils.isEmpty(videoPath)) {
+                    return;
+                }
+            }
+        });
     }
 }

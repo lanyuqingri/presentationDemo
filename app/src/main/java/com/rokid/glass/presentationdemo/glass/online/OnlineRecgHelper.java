@@ -89,24 +89,24 @@ public class OnlineRecgHelper{
         }
         Logger.d("sendFaceRecgMessage-------->trackId = " + message.getTrackId());
         //MOCK在线数据返回
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(onlineRespList == null || onlineRespList.size() <= 0){
-                    return;
-                }
-                RespOnlineSingleFaceMessage faceMessage = new RespOnlineSingleFaceMessage();
-                faceMessage.setServerCode(RespOnlineSingleFaceMessage.ServerErrorCode.OK);
-                faceMessage.setTrackId(message.getTrackId());
-                FaceInfoBean faceInfoBean = new FaceInfoBean();
-                faceInfoBean.setAlarm(true);
-                faceInfoBean.setName("xxxx");
-                faceMessage.setFaceInfoBean(faceInfoBean);
-                for(OnlineResp resp : onlineRespList){
-                    resp.onFaceResp(faceMessage);
-                }
-            }
-        },1000);
+//        mHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                if(onlineRespList == null || onlineRespList.size() <= 0){
+//                    return;
+//                }
+//                RespOnlineSingleFaceMessage faceMessage = new RespOnlineSingleFaceMessage();
+//                faceMessage.setServerCode(RespOnlineSingleFaceMessage.ServerErrorCode.OK);
+//                faceMessage.setTrackId(message.getTrackId());
+//                FaceInfoBean faceInfoBean = new FaceInfoBean();
+//                faceInfoBean.setAlarm(true);
+//                faceInfoBean.setName("xxxx");
+//                faceMessage.setFaceInfoBean(faceInfoBean);
+//                for(OnlineResp resp : onlineRespList){
+//                    resp.onFaceResp(faceMessage);
+//                }
+//            }
+//        },1000);
     }
 
     public void sendRecordMessage(RecordMessage message){

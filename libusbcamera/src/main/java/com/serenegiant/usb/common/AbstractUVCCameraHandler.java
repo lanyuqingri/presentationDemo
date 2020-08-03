@@ -55,6 +55,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.logging.Logger;
 
 /**
  * Camera业务处理抽象类
@@ -524,6 +525,8 @@ public abstract class AbstractUVCCameraHandler extends Handler {
                 camera.open(ctrlBlock);
                 synchronized (mSync) {
                     mUVCCamera = camera;
+                    Log.d(TAG_THREAD,"handleOpen===============> isAutoFocus = " + mUVCCamera.getAutoFocus());
+                    mUVCCamera.setAutoFocus(false);
                 }
                 callOnOpen();
             } catch (final Exception e) {

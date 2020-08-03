@@ -87,17 +87,17 @@ public class H264EncodeConsumer extends Thread {
             long time = System.currentTimeMillis() - lastPush;
             if (time >= 0) {
                 time = millisPerframe - time;
-                if (time > 0)
-                    Thread.sleep(time / 2);
+//                if (time > 0)
+//                    Thread.sleep(time / 2);
             }
             // 将数据写入编码器
 
             feedMediaCodecData(nv12ToNV21(yuvData, mWidth, mHeight));
 
-            if (time > 0)
-                Thread.sleep(time / 2);
+//            if (time > 0)
+//                Thread.sleep(time / 2);
             lastPush = System.currentTimeMillis();
-        } catch (InterruptedException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -246,7 +246,7 @@ public class H264EncodeConsumer extends Thread {
         final MediaFormat format = MediaFormat.createVideoFormat(MIME_TYPE, mWidth, mHeight);
         format.setInteger(MediaFormat.KEY_COLOR_FORMAT, mColorFormat);
         format.setInteger(MediaFormat.KEY_BIT_RATE, calcBitRate());
-        format.setInteger(MediaFormat.KEY_FRAME_RATE, 30);
+        format.setInteger(MediaFormat.KEY_FRAME_RATE, FRAME_RATE);
         format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 1);
 
         try {
@@ -282,11 +282,12 @@ public class H264EncodeConsumer extends Thread {
         }
     }
 
-    private static final int FRAME_RATE = 15;
-    private static final float BPP = 0.50f;
+    private static final int FRAME_RATE = 30;
+    private static final float BPP = 2f;
+//    private static final float BPP = 0.50f;
 
     private int calcBitRate() {
-        final int bitrate = (int) (BPP * FRAME_RATE * mWidth * mHeight);
+        final int bitrate = (int) (BPP*FRAME_RATE * mWidth * mHeight);
         Log.i(TAG, String.format("bitrate=%5.2f[Mbps]", bitrate / 1024f / 1024f));
         return bitrate;
     }

@@ -84,7 +84,7 @@ public class SmartRecgPresenter implements OnlineResp {
         mOnlineRecgHelper.addOnlineResp(this);
         isOnineRecging = new AtomicBoolean(false);
         reqId = new AtomicInteger(0);
-        isOnlineDebug = DefaultSPHelper.getInstance().getBoolean(FaceConstants.ROKID_ONLINE_FACE_DEBUG_KEY,false);
+        isOnlineDebug = DefaultSPHelper.getInstance().getBoolean(FaceConstants.ROKID_ONLINE_FACE_DEBUG_KEY,true);
     }
 
     // 绑定智能识别view以及 handler
@@ -174,6 +174,15 @@ public class SmartRecgPresenter implements OnlineResp {
         final byte[] rawData = faceDOWithRawData.getRawData();
         Bitmap recogBitmap = getClipFace(faceDO, rawData);
         byte[] bytes = BitmapUtils.bitmap2bytes(recogBitmap);
+        if(isOnlineDebug) {
+            if (!debugDir.exists()) {
+                debugDir.mkdirs();
+            }
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+            Date d1 = new Date(System.currentTimeMillis());
+            String currTime = simpleDateFormat.format(d1);
+            FaceFileUtils.saveBitmap(recogBitmap, "/sdcard/test/" + (faceDO.trackId) + "_" + faceDO.quality + "_" + currTime + ".png");
+        }
         ReqOnlineSingleFaceMessage onlineSingleFaceMessage = new ReqOnlineSingleFaceMessage(faceDO.trackId, bytes);
         onlineSingleFaceMessage.setWidth(recogBitmap.getWidth());
         onlineSingleFaceMessage.setHeight(recogBitmap.getHeight());

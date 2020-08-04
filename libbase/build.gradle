@@ -49,10 +49,13 @@ dependencies {
     api "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     // optional - RxJava support for Room
-    api "androidx.room:room-rxjava2:$room_version"
+    api ("androidx.room:room-rxjava2:$room_version"){
+        exclude group: 'com.google.code.findbugs'
+    }
     // optional - Guava support for Room, including Optional and ListenableFuture
-    api "androidx.room:room-guava:$room_version"
-
+    api ("androidx.room:room-guava:$room_version"){
+        exclude group: 'com.google.code.findbugs'
+    }
 
     api 'com.google.code.gson:gson:2.8.1'
     api ('com.rokid.glass:facelib:4.14.3.2-CPU'){

@@ -44,6 +44,8 @@ public class RokidSDK {
         initEventBus(application);
     }
 
+
+
     private void initLPRSDK(Application application) {
         RokidLPR.Init(application.getApplicationContext(), false);
     }

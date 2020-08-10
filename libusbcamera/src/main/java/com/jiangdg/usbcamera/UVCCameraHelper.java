@@ -24,8 +24,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-/** UVCCamera Helper class
- *
+/**
+ * UVCCamera Helper class
+ * <p>
  * Created by jiangdongguo on 2017/9/30.
  */
 
@@ -83,7 +84,7 @@ public class UVCCameraHelper {
     }
 
     public void initUSBMonitor(Activity activity, CameraViewInterface cameraView, final OnMyDevConnectListener listener) {
-        Log.d("Rokid_glass_Tag","initUSBMonitor  is called");
+        Log.d("Rokid_glass_Tag", "initUSBMonitor  is called");
         this.mActivity = activity;
         this.mCamView = cameraView;
 
@@ -112,23 +113,54 @@ public class UVCCameraHelper {
             @Override
             public void onConnect(final UsbDevice device, USBMonitor.UsbControlBlock ctrlBlock, boolean createNew) {
                 mCtrlBlock = ctrlBlock;
-                openCamera(ctrlBlock);
-                new Thread(new Runnable() {
+                mCameraHandler.addCallback(new AbstractUVCCameraHandler.CameraCallback() {
                     @Override
-                    public void run() {
-                        // wait for camera created
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                    public void onOpen() {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // wait for camera created
+                                // start previewing
+                                startPreview(mCamView);
+                            }
+                        }).start();
+                        if (listener != null) {
+                            listener.onConnectDev(device, true);
                         }
-                        // start previewing
-                        startPreview(mCamView);
                     }
-                }).start();
-                if(listener != null) {
-                    listener.onConnectDev(device,true);
-                }
+
+                    @Override
+                    public void onClose() {
+
+                    }
+
+                    @Override
+                    public void onStartPreview() {
+
+                    }
+
+                    @Override
+                    public void onStopPreview() {
+
+                    }
+
+                    @Override
+                    public void onStartRecording() {
+
+                    }
+
+                    @Override
+                    public void onStopRecording() {
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+                });
+                openCamera(ctrlBlock);
+
             }
 
             // called by disconnect to usb camera
@@ -158,7 +190,7 @@ public class UVCCameraHelper {
             mCameraHandler = null;
         }
         // initialize camera handler
-        mCamView.setAspectRatio(previewWidth / (float)previewHeight);
+        mCamView.setAspectRatio(previewWidth / (float) previewHeight);
         mCameraHandler = UVCCameraHandler.createHandler(mActivity, mCamView, 2,
                 previewWidth, previewHeight, mFrameFormat);
     }
@@ -173,8 +205,8 @@ public class UVCCameraHelper {
             mCameraHandler.release();
             mCameraHandler = null;
         }
-        mCamView.setAspectRatio(previewWidth / (float)previewHeight);
-        mCameraHandler = UVCCameraHandler.createHandler(mActivity,mCamView, 2,
+        mCamView.setAspectRatio(previewWidth / (float) previewHeight);
+        mCameraHandler = UVCCameraHandler.createHandler(mActivity, mCamView, 2,
                 previewWidth, previewHeight, mFrameFormat);
         openCamera(mCtrlBlock);
         new Thread(new Runnable() {
@@ -194,14 +226,14 @@ public class UVCCameraHelper {
 
     public void registerUSB() {
         if (mUSBMonitor != null) {
-            Log.d("Rokid_glass_tag","registerUSB camera is called");
+            Log.d("Rokid_glass_tag", "registerUSB camera is called");
             mUSBMonitor.register();
         }
     }
 
     public void unregisterUSB() {
         if (mUSBMonitor != null) {
-            Log.d("Rokid_glass_tag","unregisterUSB camera is called");
+            Log.d("Rokid_glass_tag", "unregisterUSB camera is called");
             mUSBMonitor.unregister();
         }
     }
@@ -231,7 +263,7 @@ public class UVCCameraHelper {
         if (index >= count)
             new IllegalArgumentException("index illegal,should be < devList.size()");
         if (mUSBMonitor != null) {
-            Log.d("rokid_glass_tag","usb camera requestPermission for " + devList.get(index).getDeviceName());
+            Log.d("rokid_glass_tag", "usb camera requestPermission for " + devList.get(index).getDeviceName());
             mUSBMonitor.requestPermission(getUsbDeviceList().get(index));
         }
     }
@@ -253,14 +285,14 @@ public class UVCCameraHelper {
         return mUSBMonitor.getDeviceList(deviceFilters);
     }
 
-    public void capturePicture(String savePath,AbstractUVCCameraHandler.OnCaptureListener listener) {
+    public void capturePicture(String savePath, AbstractUVCCameraHandler.OnCaptureListener listener) {
         if (mCameraHandler != null && mCameraHandler.isOpened()) {
 
             File file = new File(savePath);
-            if(! Objects.requireNonNull(file.getParentFile()).exists()) {
+            if (!Objects.requireNonNull(file.getParentFile()).exists()) {
                 file.getParentFile().mkdirs();
             }
-            mCameraHandler.captureStill(savePath,listener);
+            mCameraHandler.captureStill(savePath, listener);
         }
     }
 
@@ -272,7 +304,7 @@ public class UVCCameraHelper {
 
     public void startPusher(RecordParams params, AbstractUVCCameraHandler.OnEncodeResultListener listener) {
         if (mCameraHandler != null && !isPushing()) {
-            if(params.isSupportOverlay()) {
+            if (params.isSupportOverlay()) {
                 TxtOverlay.install(mActivity.getApplicationContext());
             }
             mCameraHandler.startRecording(params, listener);
@@ -315,7 +347,7 @@ public class UVCCameraHelper {
     }
 
     public void setOnPreviewFrameListener(AbstractUVCCameraHandler.OnPreViewResultListener listener) {
-        if(mCameraHandler != null) {
+        if (mCameraHandler != null) {
             mCameraHandler.setOnPreViewResultListener(listener);
         }
     }
@@ -351,17 +383,19 @@ public class UVCCameraHelper {
         return mCameraHandler.getSupportedPreviewSizes();
     }
 
-    public void setDefaultPreviewSize(int defaultWidth,int defaultHeight) {
-        if(mUSBMonitor != null) {
-            throw new IllegalStateException("setDefaultPreviewSize should be call before initMonitor");
+    public void setDefaultPreviewSize(int defaultWidth, int defaultHeight) {
+        if (mUSBMonitor != null) {
+//            throw new IllegalStateException("setDefaultPreviewSize should be call before initMonitor");
+            Log.d(TAG, "setDefaultPreviewSize should be call before initMonitor");
         }
         this.previewWidth = defaultWidth;
         this.previewHeight = defaultHeight;
     }
 
     public void setDefaultFrameFormat(int format) {
-        if(mUSBMonitor != null) {
-            throw new IllegalStateException("setDefaultFrameFormat should be call before initMonitor");
+        if (mUSBMonitor != null) {
+//            throw new IllegalStateException("setDefaultFrameFormat should be call before initMonitor");
+            Log.d(TAG, "setDefaultFrameFormat should be call before initMonitor");
         }
         this.mFrameFormat = format;
     }

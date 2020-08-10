@@ -23,6 +23,7 @@ allprojects {
         google()
         jcenter()
         maven { url 'http://appmaven.rokid-inc.com/repository/maven-public/' }
+        maven { url 'https://dl.bintray.com/rokid/maven' }
     }
     configurations.all {
         // 每隔 1秒 检查远程依赖是否存在更新

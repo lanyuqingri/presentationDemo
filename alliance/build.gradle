@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 
 ext {
-    versionNameExt = "1.0.5"
-    versionCodeExt = 105
+    versionNameExt = "1.0.6"
+    versionCodeExt = 106
 }
 
 android {
@@ -40,7 +40,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     api 'com.rokid.glass.mobile:viewcomponent:1.0.5'
     api 'com.rokid.glass.mobile:base:1.0.2'
-    api 'com.rokid.glass.mobile:usbcamera:1.0.1'
+    api 'com.rokid.glass.mobile:usbcamera:1.0.2'
     api files('libs/common-4.1.1.aar')
     api files('libs/glasssdk_v0.1.1.jar')
 }

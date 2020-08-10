@@ -36,7 +36,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation('com.rokid.glass.mobile:alliance:1.0.5')
+    implementation('com.rokid.glass.mobile:alliance:1.0.6')
 //    implementation('com.rokid.glass.mobile:viewcomponent:1.0.X-SNAPSHOT')
 //    implementation('com.rokid.glass.mobile:base:1.0.X-SNAPSHOT')
 //    implementation('com.rokid.glass.mobile:usbcamera:1.0.X-SNAPSHOT')

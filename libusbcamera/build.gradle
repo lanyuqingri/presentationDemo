@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 
 ext {
-    versionNameExt = "1.0.1"
-    versionCodeExt = 101
+    versionNameExt = "1.0.2"
+    versionCodeExt = 102
 }
 android {
     compileSdkVersion 29
@@ -27,6 +27,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        abortOnError false
+    }
 
 }
 
@@ -41,38 +44,38 @@ dependencies {
 
 }
 
-apply plugin: 'rokid-maven'
-rokid {
-    maven {
-        groupId = 'com.rokid.glass.mobile'
-        artifactId = "usbcamera"
-        version = versionNameExt
-
-        repository {
-            url = 'http://appmaven.rokid-inc.com/repository/maven-releases/'
-
-            sourcesJar = true
-            javadocJar = false
-        }
-
-        snapshotRepository {
-            url = 'http://appmaven.rokid-inc.com/repository/maven-snapshots'
-
-            sourcesJar = true
-            javadocJar = false
-        }
-
-        bintray {
-            repo = "maven"
-            userOrg = "rokid"
-            name = "Rokid_Glass_libusbcamera"
-            desc = 'Rokid Glass uvc camera for Android'
-            websiteUrl = "https://www.rokid.com"
-            vcsUrl = "https://www.rokid.com"
-        }
-
-    }
-}
+//apply plugin: 'rokid-maven'
+//rokid {
+//    maven {
+//        groupId = 'com.rokid.glass.mobile'
+//        artifactId = "usbcamera"
+//        version = versionNameExt
+//
+//        repository {
+//            url = 'http://appmaven.rokid-inc.com/repository/maven-releases/'
+//
+//            sourcesJar = true
+//            javadocJar = false
+//        }
+//
+//        snapshotRepository {
+//            url = 'http://appmaven.rokid-inc.com/repository/maven-snapshots'
+//
+//            sourcesJar = true
+//            javadocJar = false
+//        }
+//
+//        bintray {
+//            repo = "maven"
+//            userOrg = "rokid"
+//            name = "Rokid_Glass_libusbcamera"
+//            desc = 'Rokid Glass uvc camera for Android'
+//            websiteUrl = "https://www.rokid.com"
+//            vcsUrl = "https://www.rokid.com"
+//        }
+//
+//    }
+//}
 
 apply plugin: 'com.novoda.bintray-release'
 //生成Javadoc文档
@@ -88,6 +91,7 @@ tasks.withType(Javadoc) {
 }
 publish {
     userOrg = "rokid"
+    repoName = "maven"
     groupId = "com.rokid.glass.mobile"
     artifactId = "usbcamera"
     publishVersion = versionNameExt

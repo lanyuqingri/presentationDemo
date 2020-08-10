@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="usb_device_product_id">5678</integer>
+    <integer name="usb_device_vendor_id">1234</integer>
+    <string name="required_permission_usb_glass_device">请开启权限后再使用</string>
+</resources>

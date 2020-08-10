@@ -48,14 +48,14 @@ public abstract class MessageDialogBuilder<T extends GlassDialogBuilder> extends
     @Override
     protected void onCreateContent(Context context, ViewGroup parent, GlassDialog dialog) {
         View view = LayoutInflater.from(context).inflate(layoutId(), parent, false);
-        mTitleTv = view.findViewById(R.id.dialog_title);
+//        mTitleTv = view.findViewById(R.id.dialog_title);
         mConfirmBtn = view.findViewById(R.id.dialog_confirm);
         mCancelBtn = view.findViewById(R.id.dialog_cancel);
         mContentLayout = view.findViewById(R.id.dialog_tip);
         mContentTextView = view.findViewById(R.id.dialog_tip_content);
         mContentIcon = view.findViewById(R.id.dialog_tip_img);
 
-        mTitleTv.setText(mTitle);
+//        mTitleTv.setText(mTitle);
 
         if (!TextUtils.isEmpty(mConfirmText)) {
             mConfirmBtn.setText(mConfirmText);

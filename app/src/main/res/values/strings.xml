@@ -84,4 +84,8 @@
     <string name="no_data_please_add">暂无数据 请添加数据</string>
     <string name="s_current_usb_device">当前USB设备: %s</string>
     <string name="s_usb_device_offline">未连接</string>
+
+    <string name="tab_single">Single</string>
+    <string name="tab_multi">Multiple</string>
+    <string name="tab_smart_recognition">Smart Recognition</string>
 </resources>

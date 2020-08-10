@@ -16,3 +16,4 @@
 .idea/gradle.xml
 app/release
 .idea/*
+.idea/codeStyles/*

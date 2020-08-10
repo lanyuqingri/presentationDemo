@@ -49,6 +49,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.rokid.glass.viewcomponent.glass.CameraParams.PREVIEW_HEIGHT;
 import static com.rokid.glass.viewcomponent.glass.CameraParams.PREVIEW_WIDTH;
+import static com.rokid.glass.viewcomponent.glass.SmartRecogPresentation.SHORT_PRESS;
 
 
 public class SmartRecgPresenter implements OnlineResp {
@@ -168,6 +169,12 @@ public class SmartRecgPresenter implements OnlineResp {
         FaceDO faceDO = faceDOWithRawData.getFaceDO();
         final byte[] rawData = faceDOWithRawData.getRawData();
         Bitmap recogBitmap = getClipFace(faceDO, rawData);
+        if(true) {
+            if (!debugDir.exists()) {
+                debugDir.mkdirs();
+            }
+            FaceFileUtils.saveBitmap(recogBitmap, "/sdcard/test/" + (mCurTrackId) + ".png");
+        }
         byte[] bytes = BitmapUtils.bitmap2bytes(recogBitmap);
         ReqOnlineSingleFaceMessage onlineSingleFaceMessage = new ReqOnlineSingleFaceMessage(faceDO.trackId, bytes);
         onlineSingleFaceMessage.setWidth(recogBitmap.getWidth());
@@ -696,9 +703,9 @@ public class SmartRecgPresenter implements OnlineResp {
     @Override
     public void onFaceResp(RespOnlineSingleFaceMessage respOnlineSingleFaceMessage) {
         RespOnlineSingleFaceMessage resp = respOnlineSingleFaceMessage;
-        Logger.d("onFaceResp------------------------>is called && serverCode: " + resp.getServerCode());
         boolean isMultiRecg = BaseLibrary.getInstance().isMultiFaceRecgEnable();
         boolean isSingleFaceRecg = BaseLibrary.getInstance().isSingleFaceRecgEnable();
+        Logger.d("onFaceResp------------------------>is called && serverCode: " + resp.getServerCode(), isMultiRecg, isSingleFaceRecg);
         switch (resp.getServerCode()){
             case OK:
                 if(isMultiRecg && !isSingleFaceRecg){  //多人在线 && 单人识别没开时通过此方法给MultiFaceView绘制框
@@ -755,5 +762,23 @@ public class SmartRecgPresenter implements OnlineResp {
                 break;
         }
         isOnineRecging.set(false);
+    }
+
+    public boolean stopShowResult() {
+        if (out_time > 0) {
+            mHandler.post(this::reset);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean onTouchEvent(int event, int value) {
+        if (event == SHORT_PRESS){
+            if (out_time > 0) {
+                mHandler.post(this::reset);
+                return true;
+            }
+        }
+        return false;
     }
 }

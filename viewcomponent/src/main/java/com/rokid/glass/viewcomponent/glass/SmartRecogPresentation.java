@@ -2,6 +2,7 @@ package com.rokid.glass.viewcomponent.glass;
 
 import android.app.Presentation;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -12,6 +13,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.rokid.facelib.VideoRokidFace;
 import com.rokid.facelib.api.IVideoRokidFace;
@@ -35,6 +37,9 @@ import com.rokid.glass.lpr_sdk.RokidLPR;
 import com.rokid.glass.lpr_sdk.RokidLPRCallback;
 import com.rokid.glass.lpr_sdk.bean.LPRDO;
 import com.rokid.glass.lpr_sdk.bean.LPRModel;
+import com.rokid.glass.ui.button.GlassButton;
+import com.rokid.glass.ui.dialog.GlassDialog;
+import com.rokid.glass.ui.dialog.GlassDialogListener;
 import com.rokid.glass.viewcomponent.R;
 import com.rokid.glass.viewcomponent.glass.view.MultiFaceView;
 import com.rokid.glass.viewcomponent.glass.view.SmartRecgView;
@@ -58,6 +63,7 @@ public class SmartRecogPresentation extends Presentation {
     private Handler mHandler = new Handler();
     private OnResultShowListener onResultShowListener;
     private AtomicBoolean isCameraStop = new AtomicBoolean(false);
+    private Context outerContext;
 
     public SmartRecogPresentation(Context outerContext, Display display) {
         this(outerContext, display, R.style.LauncherTheme);
@@ -66,7 +72,7 @@ public class SmartRecogPresentation extends Presentation {
     public SmartRecogPresentation(Context outerContext, Display display, int theme) {
         super(outerContext, display, theme);
         BaseLibrary.getInstance().initSmartRecgConfig();
-        if(CameraParams.PREVIEW_WIDTH == 1280) {
+        if (CameraParams.PREVIEW_WIDTH == 1280) {
             roiRect = new Rect(200, 160, 850, 650);
         } else if (CameraParams.PREVIEW_WIDTH == 1920) {
             roiRect = new Rect(525, 515, 1125, 975);
@@ -78,6 +84,7 @@ public class SmartRecogPresentation extends Presentation {
         }
         initFaceSDK();
         initPlateSDK();
+        this.outerContext = outerContext;
     }
 
     @Override
@@ -87,8 +94,8 @@ public class SmartRecogPresentation extends Presentation {
         setContentView(R.layout.fragment_smart_recg);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        mSmartRecgView = (SmartRecgView)findViewById(R.id.smart_recg_view);
-        mMultiFaceView = (MultiFaceView)findViewById(R.id.multiFaceView);
+        mSmartRecgView = (SmartRecgView) findViewById(R.id.smart_recg_view);
+        mMultiFaceView = (MultiFaceView) findViewById(R.id.multiFaceView);
         mSmartRecgPresenter.bindView(mSmartRecgView, mMultiFaceView, mHandler);
         mSmartRecgPresenter.setOnResultShowListener(onResultShowListener);
         initAllView();
@@ -98,10 +105,10 @@ public class SmartRecogPresentation extends Presentation {
         boolean isMultiFaceEnable = BaseLibrary.getInstance().isMultiFaceRecgEnable();
         boolean isSingleFaceEnable = BaseLibrary.getInstance().isSingleFaceRecgEnable();
         boolean isPlateEnbale = BaseLibrary.getInstance().isPlateRecgEnable();
-        if(mMultiFaceView != null){
+        if (mMultiFaceView != null) {
             mMultiFaceView.setVisibility(isMultiFaceEnable ? View.VISIBLE : View.GONE);
         }
-        if(mSmartRecgView != null){
+        if (mSmartRecgView != null) {
             mSmartRecgView.setVisibility((!isSingleFaceEnable && !isPlateEnbale) ? View.GONE : View.VISIBLE);
         }
     }
@@ -146,7 +153,7 @@ public class SmartRecogPresentation extends Presentation {
                 FaceModel faceModel = FaceUtil.copyFaceModel(model);
                 byte[] originData = videoFace.getBytes();
                 byte[] data = new byte[originData.length];
-                System.arraycopy(originData,0, data, 0 ,originData.length);
+                System.arraycopy(originData, 0, data, 0, originData.length);
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -205,8 +212,8 @@ public class SmartRecogPresentation extends Presentation {
         mSmartRecgView.setNewFriendConfig(isNewFriendAlarm, newFriendDesc);
     }
 
-    public void reloadSDK(){
-        if(videoFace!=null){
+    public void reloadSDK() {
+        if (videoFace != null) {
             videoFace.destroy();
         }
         stopCameraPreview();
@@ -216,33 +223,33 @@ public class SmartRecogPresentation extends Presentation {
         restartCameraPreview();
     }
 
-    public void reset(){
-        if(mSmartRecgPresenter != null){
+    public void reset() {
+        if (mSmartRecgPresenter != null) {
             mSmartRecgPresenter.reset();
         }
-        if(onResultShowListener != null){
+        if (onResultShowListener != null) {
             onResultShowListener.onResultHide();
         }
     }
 
-    public void stopCameraPreview(){
+    public void stopCameraPreview() {
         isCameraStop.set(true);
     }
 
-    public void restartCameraPreview(){
+    public void restartCameraPreview() {
         isCameraStop.set(false);
     }
 
     public void onPreviewFrame(byte[] data) {
 //            Logger.d("onPreviewFrame---------->data.length: " + data.length + ";    isCameraStop = " + isCameraStop.get());
-        if(isCameraStop.get()){
+        if (isCameraStop.get()) {
             return;
         }
         // 现在车牌/人脸识别SDK的回调都是同步在同一个线程回调的，因此车牌/人脸识别目前串行执行
         if (mSmartRecgView.isCarShowing() || mSmartRecgView.isSingleFaceInfoShowing()) {
             //如果正在展示单人或者车牌信息，则暂不进行继续识别，等待显示结束后再进行识别
         }
-        if(false){
+        if (false) {
             debugPreviewData(data);
         }
         boolean isPlateOpen = BaseLibrary.getInstance().isPlateRecgEnable();
@@ -256,10 +263,60 @@ public class SmartRecogPresentation extends Presentation {
         }
     }
 
-    private void debugPreviewData(byte[] data){
-        Bitmap bm = BitmapUtils.nv21ToBitmap(data,PREVIEW_WIDTH,PREVIEW_HEIGHT);
+    private void debugPreviewData(byte[] data) {
+        Bitmap bm = BitmapUtils.nv21ToBitmap(data, PREVIEW_WIDTH, PREVIEW_HEIGHT);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd HH:mm:ss:SSS");
         Date d1 = new Date(System.currentTimeMillis());
         Utils.savePlateInfo(bm, simpleDateFormat.format(d1));
     }
+
+    public static final int KEYCODE_BACK = 16;
+    public static final int KEYCODE_POWER = 4;
+
+    public boolean onKeyPress(int keycode, boolean isPress) {
+        if (!isPress) {
+            if (keycode == KEYCODE_BACK) {
+                return mSmartRecgPresenter.stopShowResult();
+            }
+        }
+        return false;
+    }
+
+    public void onTouchPress(int position) {
+
+    }
+
+    public static final int SHORT_PRESS = 2;
+    public static final int LONG_PRESS = 3;
+    public static final int FORWARD_SLIDE = 4;
+    public static final int BACKWARD_SLIDE = 5;
+
+    public boolean onTouchEvent(int event, int value) {
+
+
+        if (event == FORWARD_SLIDE) {
+
+        } else if (event == BACKWARD_SLIDE) {
+
+        } else {
+            return mSmartRecgPresenter.onTouchEvent(event, value);
+        }
+        return false;
+    }
+
+    public void onImuUpdate(long timestamp, float[] values) {
+
+    }
+
+    public void onLSensorUpdate(int lux) {
+
+    }
+
+    private GlassDialog mGlassDialog;
+
+    public void onPSensorUpdate(boolean status) {
+    }
+
+
+
 }

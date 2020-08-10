@@ -150,4 +150,7 @@
     <dimen name="size_16_sp">16sp</dimen>
     <dimen name="size_80_dp">80dp</dimen>
 
+    <dimen name="indicator_height">40dp</dimen>
+    <dimen name="indicator_margin_top">5dp</dimen>
+    <integer name="indicator_text_size">21</integer>
 </resources>

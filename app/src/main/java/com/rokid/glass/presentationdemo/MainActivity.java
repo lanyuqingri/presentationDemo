@@ -1,6 +1,7 @@
 package com.rokid.glass.presentationdemo;
 
-import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
@@ -16,6 +17,11 @@ import com.rokid.glass.viewcomponent.glass.online.OnlineRequest;
 
 
 public class MainActivity extends RokidBaseActivity {
+    @Override
+    public int getDefaultBrightness() {
+        return 100;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +53,7 @@ public class MainActivity extends RokidBaseActivity {
                 faceInfoBean.setFaceImage(reqOnlineSingleFaceMessage.getFaceImage());   //在线识别后需要眼镜端展示的人员头像图片数据，此处只是mock了从眼镜端截取的图片数据
                 respOnlineSingleFaceMessage.setTrackId(reqOnlineSingleFaceMessage.getTrackId());
                 respOnlineSingleFaceMessage.setFaceInfoBean(faceInfoBean);
+                respOnlineSingleFaceMessage.setServerCode(RespOnlineSingleFaceMessage.ServerErrorCode.OK);
                 OnlineRecgHelper.getInstance().onFaceOnlineResp(respOnlineSingleFaceMessage);   //调用此接口将在线识别结果返回给眼镜
             }
 
@@ -61,6 +68,7 @@ public class MainActivity extends RokidBaseActivity {
                 carRecognizeInfoBean.setColor("红");  //车身颜色
                 carRecognizeInfoBean.setTag("浙ADA0178");  //标签信息，比如"违章3次"/"失踪车牌" 等
                 respCarRecognizeMessage.setCarRecognizeInfoBean(carRecognizeInfoBean);
+                respCarRecognizeMessage.setErrorCode(0);
                 OnlineRecgHelper.getInstance().onPlateOnlineResp(respCarRecognizeMessage);  //调用此接口将在线识别结果返回给眼镜
             }
         });

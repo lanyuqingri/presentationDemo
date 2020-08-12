@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 ext {
-    versionNameExt = "1.0.6"
+    versionNameExt = "1.0.7"
     versionCodeExt = 106
 }
 
@@ -38,11 +38,11 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    releaseApi 'com.rokid.glass.mobile:viewcomponent:1.0.5'
+    releaseApi 'com.rokid.glass.mobile:viewcomponent:1.0.6'
     debugApi project(':viewcomponent')
-    releaseApi 'com.rokid.glass.mobile:base:1.0.2'
+    releaseApi 'com.rokid.glass.mobile:base:1.0.3'
     debugApi project(':libbase')
-    releaseApi 'com.rokid.glass.mobile:usbcamera:1.0.1'
+    releaseApi 'com.rokid.glass.mobile:usbcamera:1.0.2'
     debugApi project(':libusbcamera')
     compileOnly files('libs/common-4.1.1.aar')
     api files('libs/glasssdk_v0.1.1.jar')

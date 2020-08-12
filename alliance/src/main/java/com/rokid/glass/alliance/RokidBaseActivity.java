@@ -143,7 +143,7 @@ public abstract class RokidBaseActivity extends Activity implements CameraDialog
             if (keycode == KEYCODE_BACK) {
 
                 if (!mPresentation.onKeyPress(keycode, isPress)){
-                    onGlassBackPress(keycode, isPress);
+                    onGlassBackPress();
                 }
             } else if (keycode == KEYCODE_POWER) {
                 if (null != mGlassCtrl && isPress) {
@@ -182,7 +182,7 @@ public abstract class RokidBaseActivity extends Activity implements CameraDialog
         }
     };
 
-    private void onGlassBackPress(int keycode, boolean isPress) {
+    private void onGlassBackPress() {
 
     }
 

@@ -198,7 +198,8 @@ public abstract class AbstractUVCCameraHandler extends Handler {
     public void startPreview(final Object surface) {
         checkReleased();
         if (!((surface instanceof SurfaceHolder) || (surface instanceof Surface) || (surface instanceof SurfaceTexture))) {
-            throw new IllegalArgumentException("surface should be one of SurfaceHolder, Surface or SurfaceTexture: " + surface);
+//            throw new IllegalArgumentException("surface should be one of SurfaceHolder, Surface or SurfaceTexture: " + surface);
+            Log.i(TAG, "surface should be one of SurfaceHolder, Surface or SurfaceTexture: ");
         }
 
         sendMessage(obtainMessage(MSG_PREVIEW_START, surface));

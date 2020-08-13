@@ -182,11 +182,11 @@ public abstract class RokidBaseActivity extends Activity implements CameraDialog
         }
     };
 
-    private void onGlassBackPress() {
+    public void onGlassBackPress() {
 
     }
 
-    private void onLSensorUpdate(int lux) {//前置光纤传感器 最小值为0
+    public void onLSensorUpdate(int lux) {//前置光纤传感器 最小值为0
         Logger.i("light sensor value:", lux);
     }
 
@@ -245,7 +245,7 @@ public abstract class RokidBaseActivity extends Activity implements CameraDialog
         unregisterReceiver(usbReceiver);
     }
 
-    private GlassControl mGlassCtrl;
+    public GlassControl mGlassCtrl;
     private GlassEvent mGlassEvent;
     private final BroadcastReceiver usbReceiver = new BroadcastReceiver() {
 

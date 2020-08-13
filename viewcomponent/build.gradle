@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 
 ext {
-    versionNameExt = "1.0.6"
-    versionCodeExt = 105
+    versionNameExt = "1.0.7"
+    versionCodeExt = 107
 }
 
 android {
@@ -42,8 +42,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    releaseImplementation('com.rokid.glass.mobile:base:1.0.3')
-    debugImplementation project(':libbase')
+    implementation('com.rokid.glass.mobile:base:1.0.3')
+//    debugImplementation project(':libbase')
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }
 

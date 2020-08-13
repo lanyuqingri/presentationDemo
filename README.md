@@ -7,3 +7,25 @@ app   -------------------应用主工程，里边主要集成眼镜端展示的v
 libbase  ----------------基础模块。集成了人脸、车牌识别sdk等  
 
 libusbcamera  --------usb camera 适配模块，连接手机时可以让手机读取连接的眼镜camera的数据，然后传给人脸/车牌做识别
+
+## 眼镜相关信息获取
+### 获取眼镜序列号
+String GlassControl#GetSerialNumber();
+
+### 眼镜光机亮度 0-100
+int GlassControl#GetBrightness();
+void GlassControl#SetBrightness();
+
+### Glass按键事件
+目前power键进行光机开关设置，返回键默认交给眼镜ui处理，眼镜段不处理则给到重写RokidBaseActivity#onGlassBackPress()函数
+
+## Glass-Touch事件
+接收事件位置在RokidBaseActivity#mOnGlassEvent#OnTochEvent() 可自行获取使用
+事件值为2（短按）、3（长按）、4（向前滑动）、5（向后滑动）
+
+### Glass传感器事件
+#### 前置光线传感器
+RokidBaseActivity#OnLsensorUpdate(lux) lux最小值为0
+
+#### 距离传感器
+RokidBaseActivity#onPSensorEvent(status) true可认为是带上眼镜 唤醒光机 false可认为已摘下眼镜 熄灭光机

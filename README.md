@@ -29,3 +29,7 @@ RokidBaseActivity#OnLsensorUpdate(lux) lux最小值为0
 
 #### 距离传感器
 RokidBaseActivity#onPSensorEvent(status) true可认为是带上眼镜 唤醒光机 false可认为已摘下眼镜 熄灭光机
+
+
+## 可查看glass硬件事件说明
+根目录pdf文件

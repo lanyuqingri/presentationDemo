@@ -5,6 +5,8 @@ import android.graphics.RectF;
 import android.opengl.Matrix;
 import android.text.TextUtils;
 
+import com.rokid.glass.libbase.logger.Logger;
+
 
 /**
  * @author jian.yang
@@ -12,21 +14,6 @@ import android.text.TextUtils;
  */
 
 public class RokidSystem {
-    private final static String ALIGNMENT_LEFT = "ro.rokid.alignment.left";
-    private final static String ALIGNMENT_TOP = "ro.rokid.alignment.top";
-    private final static String ALIGNMENT_RIGHT = "ro.rokid.alignment.right";
-    private final static String ALIGNMENT_BOTTOM = "ro.rokid.alignment.bottom";
-
-    private final static String ALIGNMENT_LEFT_HD = "ro.rokid.fhdalignment.left";
-    private final static String ALIGNMENT_TOP_HD = "ro.rokid.fhdalignment.top";
-    private final static String ALIGNMENT_RIGHT_HD = "ro.rokid.fhdalignment.right";
-    private final static String ALIGNMENT_BOTTOM_HD = "ro.rokid.fhdalignment.bottom";
-
-    private final static String ALIGNMENT_LEFT_2K = "ro.rokid.2kalignment.left";
-    private final static String ALIGNMENT_TOP_2K = "ro.rokid.2kalignment.top";
-    private final static String ALIGNMENT_RIGHT_2K = "ro.rokid.2kalignment.right";
-    private final static String ALIGNMENT_BOTTOM_2K = "ro.rokid.2kalignment.bottom";
-
     private final static String HARDWARE_VERSION = "ro.rokid.hardware.version";
     private final static int BASE_WIDTH = 1280;
     private final static int BASE_HEIGHT = 720;
@@ -39,6 +26,14 @@ public class RokidSystem {
 
 //    private final static int BASE_WIDTH_2K = 2048;
 //    private final static int BASE_HEIGHT_2K = 1536;
+
+    public final static int HW_OPTICAL_A = 1;
+    public final static int HW_OPTICAL_B = 2;
+    public final static int HW_OPTICAL_C = 3;
+    private static int HW_OPTICAL_TYPE = HW_OPTICAL_A;
+
+    private final static Rect DVT_ALIGNMENT = new Rect(376, 174, 938, 504);
+    private final static Rect PVT_ALIGNMENT = new Rect(336, 194, 925, 527);
 
     /**
      * use getWindowRect method
@@ -137,7 +132,8 @@ public class RokidSystem {
      * @return
      */
     public static RectF getAlignmentPercent(final int width, final int height) {
-        Rect rect = getAlignmentBaseRect();;
+        Rect rect = getAlignmentBaseRect();
+        ;
         return new RectF(rect.left * 1.0f / width, rect.top * 1.0f / height,
                 rect.right * 1.0f / width, rect.bottom * 1.0f / height);
     }
@@ -148,23 +144,17 @@ public class RokidSystem {
         return getAlignmentPercent(width, height);
     }
 
-    private static @Alignment.type
-    int getBenefitResolution(final int width) {
-        int closeHD = Math.abs(BASE_WIDTH_HD - width);
-        int close720p = Math.abs(BASE_WIDTH - width);
-
-        return closeHD < close720p ? Alignment.alignHD : Alignment.align720p;
-    }
-
     /**
      * 获取不同 glass 下的 alignment 参数
      *
      * @return
      */
     public static Rect getAlignmentBaseRect() {
+        if (HW_OPTICAL_TYPE == HW_OPTICAL_A) {
+            return DVT_ALIGNMENT;
+        }
+        return PVT_ALIGNMENT;
 //        return new Rect(376,174,938,504);
-//        return new Rect(286,194,875,527);
-        return new Rect(306,194,895,527);
 //        return new Rect(toInt(getSystemProperty(ALIGNMENT_LEFT)),
 //                toInt(getSystemProperty(ALIGNMENT_TOP)),
 //                toInt(getSystemProperty(ALIGNMENT_RIGHT)),
@@ -173,24 +163,11 @@ public class RokidSystem {
     }
 
     public static Rect getAlignmentBaseRectHD() {
-        return new Rect(500,200,1700,830);
+        return new Rect(500, 200, 1700, 830);
 //        return new Rect(toInt(getSystemProperty(ALIGNMENT_LEFT_HD)),
 //                toInt(getSystemProperty(ALIGNMENT_TOP_HD)),
 //                toInt(getSystemProperty(ALIGNMENT_RIGHT_HD)),
 //                toInt(getSystemProperty(ALIGNMENT_BOTTOM_HD)));
-
-    }
-
-    /**
-     * 获取不同 glass 下的 alignment 参数
-     *
-     * @return
-     */
-    private static Rect getAlignmentBaseRect2K() {
-        return new Rect(toInt(getSystemProperty(ALIGNMENT_LEFT_2K)),
-                toInt(getSystemProperty(ALIGNMENT_TOP_2K)),
-                toInt(getSystemProperty(ALIGNMENT_RIGHT_2K)),
-                toInt(getSystemProperty(ALIGNMENT_BOTTOM_2K)));
 
     }
 
@@ -244,15 +221,12 @@ public class RokidSystem {
         return value;
     }
 
-    private static boolean noAlignment() {
-        return TextUtils.isEmpty(getSystemProperty(ALIGNMENT_LEFT));
+    public static int getHW_OPTICAL_TYPE() {
+        return HW_OPTICAL_TYPE;
     }
 
-    private static boolean noAlignmentHD() {
-        return TextUtils.isEmpty(getSystemProperty(ALIGNMENT_LEFT_HD));
-    }
-
-    private static boolean noAlignment2K() {
-        return TextUtils.isEmpty(getSystemProperty(ALIGNMENT_LEFT_2K));
+    public static void setHW_OPTICAL_TYPE(int type) {
+        Logger.d("setHW_OPTICAL_TYPE------->type = " + type);
+        HW_OPTICAL_TYPE = type;
     }
 }

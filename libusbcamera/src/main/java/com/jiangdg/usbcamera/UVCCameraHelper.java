@@ -8,6 +8,7 @@ import android.util.Log;
 
 import org.easydarwin.sw.TxtOverlay;
 
+import com.jiangdg.usbcamera.hw.GlassInfo;
 import com.rokid.glass.libusbcamera.R;
 import com.serenegiant.usb.DeviceFilter;
 import com.serenegiant.usb.Size;
